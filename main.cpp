@@ -1,17 +1,16 @@
 #include "Vector.hpp"
+#include "iterator.hpp"
+#include "const_iterator.hpp"
+#include "Utility.hpp"
 
 int main()
 {
-	ft::Vector<int> first;
-	std::vector<int> scd;
+	ft::Vector<int> v;
 	int foo [5] = { 1, 2, 77, 40, 12071 };
-	int bar [5] = { 42, 888};
-
-	std::cout << "start\n";
-	first._arr = foo;
-	std::cout << "start 1\n";
-	first.insert(foo, 1, 10);
-	std::cout << "start2\n";
+	ft::const_iterator<int> it;
+	v._arr = foo;
+	it = v.begin();
+	std::cout << *it << " " << *v.begin() << "\n";
 
 
 }
