@@ -15,13 +15,13 @@ namespace ft
 		typedef std::random_access_iterator_tag iterator_category;
 	private:
 		typedef VectorIterator<T> _Self;
-		pointer m_ptr;
-	protected:
 
-		pointer get_arr() const {return m_ptr;}
+		//should put inside private
+		pointer m_ptr;
 	public:
-		VectorIterator(): m_ptr(NULL){}//default
 		VectorIterator(pointer ptr) : m_ptr(ptr){}
+		VectorIterator(): m_ptr(NULL){}//default
+
 		VectorIterator(const _Self &obj):m_ptr(obj.m_ptr){}
 		~VectorIterator(){}//destructor
 		_Self &operator=(const _Self &src)//b = a;
@@ -76,6 +76,10 @@ namespace ft
 				return (*this);
 		}
 		reference operator[](size_type n){return m_ptr[n];}
+		template<typename U,  class Allocator>
+		friend class Vector;
+		/*Vector can visit all attribute*/
+
 	};
 
 	template <typename T>// declare in the class
@@ -93,8 +97,8 @@ namespace ft
 	template< typename T >
 		VectorIterator<T> operator+(VectorIterator<T> &a, size_t n)
 	{
-		VectorIterator<T> res = a;
-        return a += n;
+		VectorIterator<T> tmp = a;
+        return tmp += n;
 	} //https://stackoverflow.com/questions/2425906/operator-overloading-outside-class
 
 	template< typename T>

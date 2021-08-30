@@ -6,15 +6,14 @@
 #include <memory>
 #include <algorithm>
 #include <list>
+#include <sstream>
+#include <stdexcept>
 #include "iterator.hpp"
 #include "const_iterator.hpp"
 #include "Utility.hpp"
 
 namespace ft
 {
-	template<typename T,  class Allocator>
-	class Vector;
-
 	template< class T, class Allocator = std::allocator<T> >
 	class Vector
 	{
@@ -27,44 +26,134 @@ namespace ft
 		typedef const T&                const_reference;
 		typedef T*                      pointer;
 		typedef const T*                const_pointer;
+//		typedef typename Allocator::const_pointer const_pointer;
+//		typedef typename Allocator::const_reference const_reference;
 		typedef VectorIterator<T>       iterator;
-		typedef VectorIterator<const T> const_iterator;
+		typedef Const_VectorIterator<T> const_iterator;
 	private:
+	public:
 		size_type _len;
 		size_type _cap;
-	public:
+
 		pointer _arr;
 		explicit Vector (const allocator_type& alloc = allocator_type()):_arr(NULL), _len(0), _cap(0){}
 
 		explicit Vector (size_type n, const value_type& val = value_type(),
 						 const allocator_type& alloc = allocator_type()):_arr(NULL), _len(0), _cap(0)
 			{
-//				insert(begin(), n, val);
+				insert(begin(), n, val);
 			}
+
+		Vector (const Vector& x):_arr(NULL), _len(0), _cap(0)
+		{
+
+		}
+
+		~vector(){this->clear();}
 
 		template <class InputIterator>
 		Vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()){}
 
-		//iterator begin(){return iterator(_arr);}
-		iterator end(){return iterator(_arr + _len);}
+		iterator begin(){return iterator(_arr);}
 
 		const_iterator begin() const
 		{
+			std::cout << "inside begin\n";
 			return const_iterator(_arr);
 		}
+
+		iterator end(){return iterator(_arr + _len);}
+
 		const_iterator end() const
 		{
 			return const_iterator(_arr + _len);
 		}
+		size_type size() const
+		{
+			return (this->_len);
+		}
+		size_type max_size() const
+		{
+			return (Allocator().max_size());
+		}
+		void resize (size_type n, T val = T())
+		{
+			allocator_type alloc;
+			if (n < _len)
+			{
+				for(size_type i=n; i < _len; i++)
+					alloc.destroy(_arr + i);
+			}
+			else if (n == _len)
+				return ;
+			else if (n > _len && n <= _cap)
+			{
+				for(int i=_len; i < n; i++)
+					_arr[i] = val;
+			}
+			else if (n > _len && n > _cap)
+			{
+				std::cout << "start\n";
+				reserve(n);
+				for(int i=_len; i < n; i++)
+					_arr[i] = val;
+			}
+			_len = n;
+		}
+
+		reference operator[] (size_type n){return _arr[n];}
+		const_reference operator[] (size_type n) const{return _arr[n];}
 
 
+		bool empty() const {return !_len;}
+		size_type capacity() const{return _cap;}
+		reference at (size_type n)
+		{
+			if (n >= _len)
+			{
+				std::stringstream ss;
+				ss << "vector::_M_range_check: __n which is " << n << " = this->size() which is " << _len;
+				throw std::out_of_range(ss.str());
+			}
+			else
+				return _arr[n];
+		}
 
+		const_reference at (size_type n) const
+			{
+				if (n >= _len)
+				{
+					std::stringstream ss;
+					ss << "vector::_M_range_check: __n which is " << n << " = this->size() which is " << _len;
+					throw std::out_of_range(ss.str());
+				}
+				else
+					return _arr[n];
+			}
 
+		reference front(){return _arr[0];}
+		const_reference front() const{return _arr[0];}
 
-
-
-
-
+		reference back(){return _arr[_len - 1];}
+		/*if it is empty, it will cause undefined behavior*/
+		const_reference back() const{return _arr[_len - 1];}
+		void pop_back()
+		{
+			allocator_type alloc;
+			alloc.destroy(&back());
+			_len--;
+		}
+		void clear()
+		{
+			allocator_type alloc;
+			for(size_type i=0; i < _len; i++)
+			{
+				alloc.destroy(_arr + i);
+			}
+			alloc.deallocate(_arr, _cap);
+			_len = 0;
+			_cap = 0;
+		}
 
 
 		iterator insert (iterator position, const value_type& val)
@@ -74,40 +163,37 @@ namespace ft
 		}
 		void insert (iterator position, size_type n, const value_type& val)
 		{
-			std::cout <<  "ICI\n";
 			if (!n)
 				return ;
-			std::ptrdiff_t index = position.m_ptr - _arr;
-			std::cout << index << "\n";
-			size_type tmp = index;
-			if (n + _len > _cap)
-				reserve(_len + n);
-			while (index < _len)
+			allocator_type alloc;
+			size_type len = _len;
+			difference_type index = position - this->begin();
+			reserve(_len + n);
+			/*can not ove from left to right, to avoid override*/
+			for(ptrdiff_t i = len - 1; i >= index; i--)
 			{
-				_arr[index + n] = _arr[index];
-				index++;
+				alloc.construct(_arr + i + n, _arr[i]);
+				alloc.destroy(_arr + i);
 			}
-			index = tmp;
-			while (n > 0)
+			for(size_type i = index; i < index + n; i++)
 			{
-					_arr[index] = val;
-					n--;
+				alloc.construct(_arr + i, val);
 			}
 			_len += n;
-			for(int i=0; i < _len; i++)
-				std::cout << " " << _arr[i] << "\n";
 		}
 
-		template <class InputIterator>
-		void insert (iterator position, InputIterator first, InputIterator last)
-		{}
+		// template <class InputIterator>
+		// void insert (iterator position, InputIterator first, InputIterator last)
+		// {
+
+		// }
 
 		void reserve (size_type n)
 		{
 			if (n > _cap)
 			{
 				allocator_type alloc;
-				pointer new_arr = alloc.allocate(n);
+				pointer new_arr = alloc.allocate(n);//Memory is allocated for n objects of type T but objects are not constructed
 				for(size_type i=0; i < _len; i++)
 				{
 					alloc.construct(new_arr + i, _arr[i]);
