@@ -15,11 +15,11 @@ namespace ft
 		typedef std::random_access_iterator_tag iterator_category;
 	private:
 		typedef VectorIterator<T> _Self;
-
+		VectorIterator(pointer ptr) : m_ptr(ptr){}
 		//should put inside private
 		pointer m_ptr;
 	public:
-		VectorIterator(pointer ptr) : m_ptr(ptr){}
+
 		VectorIterator(): m_ptr(NULL){}//default
 
 		VectorIterator(const _Self &obj):m_ptr(obj.m_ptr){}

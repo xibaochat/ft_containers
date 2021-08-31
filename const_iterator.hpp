@@ -80,6 +80,9 @@ namespace ft
 		const_reference operator*() const {return *m_ptr;}
 		const_pointer operator->() {return m_ptr;}
 		const_reference operator[](size_type n){return m_ptr[n];}
+
+		template<typename U,  class Allocator>
+		friend class Vector;
 	};
 
 	/******************************************************************

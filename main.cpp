@@ -6,7 +6,16 @@
 int main()
 {
 	using namespace std;
-	ft::Vector<int> v;
+
+
+	ft::Vector<int> myvector (3,100);
+	ft::Vector<int>::iterator it;
+
+	it = myvector.begin();
+	it = myvector.insert ( it , 200 );
+	it = myvector.begin();
+	it = myvector.insert ( it , 200 );
+	cout << *it << " cap is " << myvector.capacity() << "\n";
 	vector<int> real_v;
 	// v.push_back(1);
 	// v.push_back(2);
@@ -15,17 +24,6 @@ int main()
 	// v_cIter = v.begin();
 	// std::cout << *v_cIter << " " << *v.begin() << "\n";
 
-	int foo [5] = { 1, 2, 77, 40, 12071 };
-	ft::Vector<int>::iterator it;
-	v._arr = foo;
-	v._len = 5;
-	v._cap = 8;
-//	v.resize(19);
-	it = v.begin();
-	v.insert ( it + 1 , 2, 200 );
-	for (it=v.begin(); it<v.end(); it++)
-		std::cout << ' ' << *it <<  " ";
-	cout << "\n";
 
 	// cout << "mine cap " << v.capacity() << " size " << v.size() << endl << "ele are \n";
 	// for (size_t i = 0; i < v.size(); ++i)
@@ -39,18 +37,27 @@ int main()
 	// catch (const out_of_range& oor) {
 	// 	std::cerr << "Out of Range error: " << oor.what() << '\n';
 	// }
-    vector<int> c1;
-vector<int> c2(c1);
+    vector<int> c1(3, 100);
+	vector<int> c2(c1);
     vector<int>::iterator c1_Iter;
     vector<int>::const_iterator c1_cIter;
-
-    c1.push_back(1);
-    c1.push_back(2);    c1.push_back(77);     c1.push_back(40);
-	c1.push_back(12071);
 	c1_Iter = c1.begin();
-	c1.insert (c1_Iter + 1, 2, 200 );
-	for (c1_Iter = c1.begin(); c1_Iter < c1.end(); c1_Iter++)
-		std::cout << ' ' << *c1_Iter <<  " ";
+	c1_Iter = c1.insert ( c1_Iter , 200 );
+	c1_Iter = c1.begin();
+	c1_Iter = c1.insert ( c1_Iter , 200 );
+	std::cout << "\n capacity " << c1.capacity() <<  " ";
+
+//	std::cout << "\n capacity " << c1.capacity() <<  " ";
+
+
+
+//    c1.push_back(2);    c1.push_back(77);     c1.push_back(40);
+//	c1.push_back(12071);
+//	c1_Iter = c1.begin();
+//	c1.insert (c1_Iter + 1, 2, 200 );
+//	for (c1_Iter = c1.begin(); c1_Iter < c1.end(); c1_Iter++)
+//		std::cout << ' ' << *c1_Iter <<  " ";
+//	std::cout << "\n capacity " << c1.capacity() <<  " ";
 
 
     // cout << "The vector c1 contains elements:";
@@ -73,19 +80,4 @@ vector<int> c2(c1);
 	// cout << " " << *c1_cIter;
     // The following line would be an error because iterator is const
 //    *c1_cIter = 200;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
