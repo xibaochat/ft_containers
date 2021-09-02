@@ -1,6 +1,7 @@
 #ifndef CONST_ITERATOR
 # define CONST_ITERATOR
 
+#include "Utility.hpp"
 namespace ft
 {
 	template <typename T>
@@ -17,22 +18,33 @@ namespace ft
 	private:
 		typedef Const_VectorIterator<T> _Self;
 		const_pointer m_ptr;
-		Const_VectorIterator(const_pointer ptr):m_ptr(ptr){}//need move to privee
+		Const_VectorIterator(const_pointer ptr):m_ptr(ptr){}
 	public:
 		/*******************************************
         *****  Member Functions (Coplien Form) *****
         *******************************************/
 		Const_VectorIterator():m_ptr(NULL){}
 		Const_VectorIterator(const _Self &obj):m_ptr(obj.m_ptr){}
+		~Const_VectorIterator(){}
 		_Self &operator=(const _Self &src)
 		{
 			this->m_ptr = src.m_ptr;
 			return (*this);
 		}
-		~Const_VectorIterator(){}
+		_Self &operator=(VectorIterator<T> src)
+		{
+			this->m_ptr = src.operator->();
+			return (*this);
+		}
+//		Const_VectorIterator<T>(VectorIterator<T> src)
+//			{ m_ptr = src.operator->();}
 
-		template <typename U>
-		friend std::ptrdiff_t operator-( const VectorIterator<const U> &a, const VectorIterator<const U> &b);
+		friend difference_type     operator-(const _Self &a, const _Self &b) {
+            return (a.m_ptr - b.m_ptr);
+        }
+
+		//template <typename U>
+		//friend std::ptrdiff_t operator-( const VectorIterator<const U> &a, const VectorIterator<const U> &b);
 		/*******************************************
 		        *****  COMPARE  *****
            == | != | < | <= | > | >= 6 in total
@@ -63,12 +75,12 @@ namespace ft
             return (obj);
         }
 
-		_Self & operator+=(size_type n)
+		_Self & operator+=(std::ptrdiff_t n)
         {
             m_ptr += n;
             return (*this);
         }
-		_Self &operator-=(size_type n)
+		_Self &operator-=(std::ptrdiff_t n)
         {
                 m_ptr -= n;
                 return (*this);
@@ -79,7 +91,7 @@ namespace ft
 		*************************************************************/
 		const_reference operator*() const {return *m_ptr;}
 		const_pointer operator->() {return m_ptr;}
-		const_reference operator[](size_type n){return m_ptr[n];}
+		const_reference operator[](std::ptrdiff_t n){return m_ptr[n];}
 
 		template<typename U,  class Allocator>
 		friend class Vector;
@@ -90,30 +102,29 @@ namespace ft
        a + n | n + a | a - n | a - b
 	*******************************************************************/
 	template< typename T >
-	VectorIterator<const T> operator+(VectorIterator<const T> &a, size_t n)
+	Const_VectorIterator<const T> operator+(const Const_VectorIterator<T> &a, std::ptrdiff_t n)
     {
-        VectorIterator<const T> tmp = a;
+        Const_VectorIterator<const T> tmp = a;
         return tmp += n;
     }
 
 	template< typename T>
-    VectorIterator<const T> operator+(size_t n, VectorIterator<T> &a)
+    Const_VectorIterator<const T> operator+(std::ptrdiff_t n, const Const_VectorIterator<T> &a)
     {
         return (a + n);
     }
 
 	template<typename T>
-    VectorIterator<T> & operator-(VectorIterator<const T> &a, size_t n)
+    Const_VectorIterator<T> & operator-(const Const_VectorIterator<T> &a, std::ptrdiff_t n)
     {
-        VectorIterator<T> t(a);
+        Const_VectorIterator<T> t(a);
         return t-=n;
     }
-
-	template <typename T>// declare as friend in the class
-    std::ptrdiff_t operator-(const VectorIterator<const T> &a, const VectorIterator<const T> &b)
-    {
-        return (a.m_ptr - b.m_ptr);
-    }
+	// template <typename T>// declare as friend in the class
+    // std::ptrdiff_t operator-(const VectorIterator<const T> &a, const VectorIterator<const T> &b)
+    // {
+    //     return (a.m_ptr - b.m_ptr);
+    // }
 }
 
 #endif

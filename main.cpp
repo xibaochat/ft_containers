@@ -7,22 +7,39 @@ int main()
 {
 	using namespace std;
 
+	std::vector<int> v(5, 10);
+	std::vector<int> v1(v.begin()+1, v.end());
+	std::vector<int> v2(v1);
+	std::vector<int>::const_iterator it = v2.begin();
 
-	ft::Vector<int> myvector (3,100);
-	ft::Vector<int>::iterator it;
+	//ft::Vector<int> v3;
+//	v3.insert(1 + v3.begin() , v.begin(), v.end());
+//	cout << *(v3.begin() + 1) << "\n";
+//	ft::Vector<int> v4(v3);
+	//ft::Vector<int>::const_iterator c_it = v3.begin();
+	// while (it < v4.end())
+	// 	cout << " " << *it++ << ", ";
 
-	it = myvector.begin();
-	it = myvector.insert ( it , 200 );
-	it = myvector.begin();
-	it = myvector.insert ( it , 200 );
-	cout << *it << " cap is " << myvector.capacity() << "\n";
-	vector<int> real_v;
-	// v.push_back(1);
-	// v.push_back(2);
-	// cout << "The vector v contains elements:";
-	// ft::Vector<int>::const_iterator v_cIter;
-	// v_cIter = v.begin();
-	// std::cout << *v_cIter << " " << *v.begin() << "\n";
+	ft::Vector<int> myvector(v.begin(), v.end());
+	// ft::Vector<int> myvector1(myvector);
+//
+	//ft::Vector<int> myvector2(4, 100);
+	// ft::Vector<int>::iterator it;
+	// int arr[3] = {1,2,3};
+	// it = myvector.begin();
+	// myvector.insert ( it , v.begin(), v.end() );
+	// it = myvector.begin();
+	// it = myvector.insert ( it , 200 );
+	// cout << *it << " cap is " << myvector.capacity() << "\n";
+	// vector<int> real_v;
+	// // v.push_back(1);
+	// // v.push_back(2);
+	// // cout << "The vector v contains elements:";
+	ft::Vector<int>::const_iterator v_cIter;
+	v_cIter = myvector.begin();
+    // while (it < myvector.end())
+    //     cout << " " << *it++ << ", ";
+
 
 
 	// cout << "mine cap " << v.capacity() << " size " << v.size() << endl << "ele are \n";
@@ -37,15 +54,15 @@ int main()
 	// catch (const out_of_range& oor) {
 	// 	std::cerr << "Out of Range error: " << oor.what() << '\n';
 	// }
-    vector<int> c1(3, 100);
-	vector<int> c2(c1);
-    vector<int>::iterator c1_Iter;
-    vector<int>::const_iterator c1_cIter;
-	c1_Iter = c1.begin();
-	c1_Iter = c1.insert ( c1_Iter , 200 );
-	c1_Iter = c1.begin();
-	c1_Iter = c1.insert ( c1_Iter , 200 );
-	std::cout << "\n capacity " << c1.capacity() <<  " ";
+    // vector<int> c1(3, 100);
+	// vector<int> c2(c1);
+    // vector<int>::iterator c1_Iter;
+    // vector<int>::const_iterator c1_cIter;
+	// c1_Iter = c1.begin();
+	// c1_Iter = c1.insert ( c1_Iter , 200 );
+	// c1_Iter = c1.begin();
+	// c1_Iter = c1.insert ( c1_Iter , 200 );
+	//std::cout << "\n capacity " << c1.capacity() <<  " ";
 
 //	std::cout << "\n capacity " << c1.capacity() <<  " ";
 

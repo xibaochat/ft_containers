@@ -1,6 +1,7 @@
 #ifndef ITERATOR_HPP
 # define ITERATOR_HPP
 
+#include "Utility.hpp"
 namespace ft
 {
 	template <typename T>
@@ -19,9 +20,7 @@ namespace ft
 		//should put inside private
 		pointer m_ptr;
 	public:
-
 		VectorIterator(): m_ptr(NULL){}//default
-
 		VectorIterator(const _Self &obj):m_ptr(obj.m_ptr){}
 		~VectorIterator(){}//destructor
 		_Self &operator=(const _Self &src)//b = a;
@@ -64,45 +63,55 @@ namespace ft
 			return (obj);
 		}
 
-		_Self & operator+=(size_type n)
+		_Self & operator+=(difference_type n)
 		{
 			m_ptr += n;
 			return (*this);
 		}
 
-		_Self &operator-=(size_type n)
+		_Self &operator-=(difference_type n)
 		{
 				m_ptr -= n;
 				return (*this);
 		}
 		reference operator[](size_type n){return m_ptr[n];}
+
+		//cannot & const
+		// friend const _Self operator+(_Self out, difference_type offset)
+		// {
+		// 	out += offset;
+		// 	return out;
+		// }
+
 		template<typename U,  class Allocator>
 		friend class Vector;
 		/*Vector can visit all attribute*/
 
 	};
 
-	template <typename T>// declare in the class
+	template <typename T>// declare in the class a-b
 	std::ptrdiff_t operator-(const VectorIterator<T> &a, const VectorIterator<T> &b)
 	{
 		return (a.m_ptr - b.m_ptr);
 	}
 
 	template<typename T>
-	VectorIterator<T> & operator-(VectorIterator<T> &a, size_t n)
+	VectorIterator<T> & operator-(const VectorIterator<T> &a, std::ptrdiff_t n)
 	{
 		VectorIterator<T> t(a);
 		return t-=n;
 	}
+
 	template< typename T >
-		VectorIterator<T> operator+(VectorIterator<T> &a, size_t n)
+	VectorIterator<T> operator+(const VectorIterator<T> &a, std::ptrdiff_t  n)
 	{
 		VectorIterator<T> tmp = a;
-        return tmp += n;
+		tmp += n;
+		return tmp;
 	} //https://stackoverflow.com/questions/2425906/operator-overloading-outside-class
 
 	template< typename T>
-	VectorIterator<T> operator+(size_t n, VectorIterator<T> &a)
+	VectorIterator<T> operator+(std::ptrdiff_t n, const VectorIterator<T> &a)
 	{
 		return (a + n);
 	}

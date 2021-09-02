@@ -3,6 +3,7 @@
 
 #include <iterator>
 #include <cstddef>
+#include <iostream>
 
 namespace ft
 {

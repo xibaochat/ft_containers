@@ -37,39 +37,42 @@ namespace ft
 		size_type _len;
 		size_type _cap;
 		pointer _arr;
-		explicit Vector (const allocator_type& alloc = allocator_type()):_arr(NULL), _len(0), _cap(0), _alloc(alloc)
+		explicit Vector (const allocator_type& alloc = allocator_type()):\
+			_arr(NULL), _len(0), _cap(0), _alloc(alloc)
 			{
 				std::cout << "default construct\n";
 			}
 		//remplir
-		explicit Vector (size_type n, const value_type& val = value_type(),
-						 const allocator_type& alloc = allocator_type()):_arr(NULL), _len(0), _cap(0), _alloc(alloc)
-			{
-				std::cout << "constructor remplirwith n and val\n";
-				insert(this->begin(), n, val);
-			}
+		// explicit Vector (size_type n, const value_type& val = value_type(),
+		// 				 const allocator_type& alloc = allocator_type()):\
+		// 	_arr(NULL), _len(0), _cap(0), _alloc(alloc)
+		// 	{
+		// 		std::cout << "constructor remplir with n and val\n";
+		// 		insert(this->begin(), n, val);
+		// 	}
 		//range
-		// template <class InputIterator>
-		// Vector (InputIterator first, InputIterator last, \
-		// 		const allocator_type& alloc = allocator_type()):_arr(NULL), _len(0), _cap(0),_alloc(alloc)
-		// {
-		// 	std::cout << "range with input iterator\n";
-		// 	/*other insert*/
-		// 	insert(this->begin(), first, last);
-		// }
+		template <class InputIterator>
+		Vector (InputIterator first, InputIterator last, \
+		  		const allocator_type& alloc = allocator_type()):\
+		 	_arr(NULL), _len(0), _cap(0),_alloc(alloc)
+		{
+			std::cout << "range with input iterator\n";
+			/*other insert*/
+			insert(this->begin(), first, last);
+		}
 
 		Vector (const Vector& x):_arr(NULL), _len(0), _cap(0), _alloc(x._alloc)
 		{
 			std::cout << "copy construct\n";
-//			this->insert(begin(), x.begin(), x.end());
+			this->insert(begin(), x.begin(), x.end());
 		}
 
 		~Vector(){std::cout << "destroy me\n"; this->clear();}
 
 		_Self &operator=(const _Self &src)
 		{
-//			this->clear();
-//			this->insert(begin(), x.begin(), x.end());
+			this->clear();
+			this->insert(begin(), src.begin(), src.end());
 			return *this;
 		}
 
@@ -160,27 +163,6 @@ namespace ft
 			size_type len = _len;
 			difference_type index = position - this->begin();
 			int n = 1;
-			if (empty())
-				reserve(1);
-			else if (_len + 1 > _cap)
-				reserve(2 * _cap);
-			/*can not move from left to right, to avoid override*/
-			for(ptrdiff_t i = len - 1; i >= index; i--)
-			{
-				_alloc.construct(_arr + i + 1, _arr[i]);
-				_alloc.destroy(_arr + i);
-			}
-			_alloc.construct(_arr + index, val);
-			_len += 1;
-			return (iterator(_arr + index));
-		}
-		void insert (iterator position, size_type n, const value_type& val)
-		{
-			std::cout << "in this insert\n";
-			if (!n)
-				return ;
-			size_type len = _len;
-			difference_type index = position - this->begin();
 			if (_len + n > _cap)
 			{
 				if (2 * _cap >= _len + n)
@@ -191,38 +173,62 @@ namespace ft
 			/*can not move from left to right, to avoid override*/
 			for(ptrdiff_t i = len - 1; i >= index; i--)
 			{
-				_alloc.construct(_arr + i + n, _arr[i]);
+				_alloc.construct(_arr + i + 1, _arr[i]);
 				_alloc.destroy(_arr + i);
 			}
-			for(size_type i = index; i < index + n; i++)
-			{
-				_alloc.construct(_arr + i, val);
-			}
-			_len += n;
+			_alloc.construct(_arr + index, val);
+			_len += 1;
+			return (iterator(_arr + index));
 		}
-
-		// template <class InputIterator>
-		// void insert (iterator position, InputIterator first, InputIterator last)//it.begin() or array
+		// void insert (iterator position, size_type n, const value_type& val)
 		// {
-		// 	std::cout << "in that insert\n";
-		// 	allocator_type alloc;
-		// 	difference_type index = position - this->begin();
-		// 	difference_type n = last - first;//nb to insert
+		// 	std::cout << "in this insert\n";
 		// 	if (!n)
 		// 		return ;
-		// 	reserve(_len + n);
-		// 	for(ptrdiff_t i = _len - 1; i >= index; i--)
+		// 	size_type len = _len;
+		// 	difference_type index = position - this->begin();
+		// 	if (_len + n > _cap)
 		// 	{
-		// 		alloc.construct(_arr + i + n, _arr[i]);
-		// 		alloc.destroy(_arr + i);
+		// 		if (2 * _cap >= _len + n)
+		// 			reserve(2 * _cap);
+		// 		else
+		// 			reserve(_len + n);
 		// 	}
-		// 	for(InputIterator it = first; it != last; ++it)
+		// 	/*can not move from left to right, to avoid override*/
+		// 	for(ptrdiff_t i = len - 1; i >= index; i--)
 		// 	{
-		// 		alloc.construct(_arr + index, *it);
-		// 		index++;
+		// 		_alloc.construct(_arr + i + n, _arr[i]);
+		// 		_alloc.destroy(_arr + i);
+		// 	}
+		// 	for(size_type i = index; i < index + n; i++)
+		// 	{
+		// 		_alloc.construct(_arr + i, val);
 		// 	}
 		// 	_len += n;
 		// }
+
+		template <class InputIterator>
+		void insert (iterator position, InputIterator first, InputIterator last)//it.begin() or array
+		{
+			std::cout << "in that insert\n";
+
+			difference_type index = position - this->begin();
+			difference_type n = last - first;//nb to insert
+			if (!n)
+				return ;
+			reserve(_len + n);
+			for(ptrdiff_t i = _len - 1; i >= index; i--)
+			{
+				_alloc.construct(_arr + i + n, _arr[i]);
+				_alloc.destroy(_arr + i);
+			}
+			for(InputIterator it = first; it != last; ++it)
+			{
+				_alloc.construct(_arr + index, *it);
+				index++;
+			}
+			_len += n;
+		}
 
 		void reserve (size_type n)
 		{
@@ -281,9 +287,27 @@ namespace ft
 			return (this->_alloc);
 		}
 
-
+		template <class InputIterator>
+		void assign (InputIterator first, InputIterator last)
+		{
+			this->clear();
+			this->insert(begin(), first, last);
+		}
+		void assign (size_type n, const value_type& val)
+		{
+			this->clear();
+			this->insert(begin(), n, val);
+		}
 
 	};
+
+	//non member function
+	template <class T, class Alloc>
+	void swap (Vector<T,Alloc>& x, Vector<T,Alloc>& y)
+	{
+		x.swap(y);
+	}
+
 
 }
 
