@@ -28,7 +28,6 @@ namespace ft
 			this->m_ptr = src.m_ptr;
 			return *this;
 		}
-
 		reference operator*() const {return *m_ptr;}
 		pointer operator->() {return m_ptr;}
 
@@ -115,6 +114,7 @@ namespace ft
 	{
 		return (a + n);
 	}
+
 }
 
 

@@ -26,10 +26,9 @@ namespace ft
 		typedef const T&                const_reference;
 		typedef T*                      pointer;
 		typedef const T*                const_pointer;
-//		typedef typename Allocator::const_pointer const_pointer;
-//		typedef typename Allocator::const_reference const_reference;
 		typedef VectorIterator<T>       iterator;
 		typedef Const_VectorIterator<T> const_iterator;
+
 	private:
 		typedef Vector<T> _Self;
 		allocator_type _alloc;
@@ -216,7 +215,13 @@ namespace ft
 			difference_type n = last - first;//nb to insert
 			if (!n)
 				return ;
-			reserve(_len + n);
+			if (_len + n > _cap)
+			{
+				if (2 * _cap >= _len + n)
+					reserve(2 * _cap);
+				else
+					reserve(_len + n);
+			}
 			for(ptrdiff_t i = _len - 1; i >= index; i--)
 			{
 				_alloc.construct(_arr + i + n, _arr[i]);

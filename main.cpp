@@ -8,9 +8,17 @@ int main()
 	using namespace std;
 
 	std::vector<int> v(5, 10);
-	std::vector<int> v1(v.begin()+1, v.end());
-	std::vector<int> v2(v1);
-	std::vector<int>::const_iterator it = v2.begin();
+	ft::Vector<int> v1(v.begin()+1, v.end());
+	ft::Vector<int> v2(v1);
+	ft::Vector<int>::const_iterator c_it = v1.begin();
+	ft::Vector<int>::iterator it = v2.begin();
+	cout << c_it - it;
+
+	//std::vector<int> v3(v.begin()+1, v.end());
+	// std::vector<int> v4(v3);
+//	std::vector<int>::const_iterator c_itt = v3.begin();
+	// std::vector<int>::iterator itt = v3.begin();
+
 
 	//ft::Vector<int> v3;
 //	v3.insert(1 + v3.begin() , v.begin(), v.end());
@@ -20,7 +28,7 @@ int main()
 	// while (it < v4.end())
 	// 	cout << " " << *it++ << ", ";
 
-	ft::Vector<int> myvector(v.begin(), v.end());
+//	ft::Vector<int> myvector(v.begin(), v.end());
 	// ft::Vector<int> myvector1(myvector);
 //
 	//ft::Vector<int> myvector2(4, 100);
@@ -35,8 +43,8 @@ int main()
 	// // v.push_back(1);
 	// // v.push_back(2);
 	// // cout << "The vector v contains elements:";
-	ft::Vector<int>::const_iterator v_cIter;
-	v_cIter = myvector.begin();
+	// ft::Vector<int>::const_iterator v_cIter;
+	// v_cIter = myvector.begin();
     // while (it < myvector.end())
     //     cout << " " << *it++ << ", ";
 

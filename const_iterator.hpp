@@ -24,7 +24,11 @@ namespace ft
         *****  Member Functions (Coplien Form) *****
         *******************************************/
 		Const_VectorIterator():m_ptr(NULL){}
-		Const_VectorIterator(const _Self &obj):m_ptr(obj.m_ptr){}
+		Const_VectorIterator(const _Self &obj):m_ptr(obj.m_ptr){}//a(b)
+		Const_VectorIterator(VectorIterator<T> obj)
+		{
+			m_ptr = obj.operator->();
+		}
 		~Const_VectorIterator(){}
 		_Self &operator=(const _Self &src)
 		{
@@ -36,8 +40,6 @@ namespace ft
 			this->m_ptr = src.operator->();
 			return (*this);
 		}
-//		Const_VectorIterator<T>(VectorIterator<T> src)
-//			{ m_ptr = src.operator->();}
 
 		friend difference_type     operator-(const _Self &a, const _Self &b) {
             return (a.m_ptr - b.m_ptr);
