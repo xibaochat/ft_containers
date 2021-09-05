@@ -32,10 +32,10 @@ namespace ft
 	private:
 		typedef Vector<T> _Self;
 		allocator_type _alloc;
-	public:
 		size_type _len;
 		size_type _cap;
 		pointer _arr;
+	public:
 		explicit Vector (const allocator_type& alloc = allocator_type()):\
 			_arr(NULL), _len(0), _cap(0), _alloc(alloc)
 			{
@@ -66,7 +66,7 @@ namespace ft
 			this->insert(begin(), x.begin(), x.end());
 		}
 
-		~Vector(){std::cout << "destroy me\n"; this->clear();}
+		~Vector(){this->clear();}
 
 		_Self &operator=(const _Self &src)
 		{
@@ -187,12 +187,7 @@ namespace ft
 		// 	size_type len = _len;
 		// 	difference_type index = position - this->begin();
 		// 	if (_len + n > _cap)
-		// 	{
-		// 		if (2 * _cap >= _len + n)
-		// 			reserve(2 * _cap);
-		// 		else
-		// 			reserve(_len + n);
-		// 	}
+		//		reserve(_len + n);
 		// 	/*can not move from left to right, to avoid override*/
 		// 	for(ptrdiff_t i = len - 1; i >= index; i--)
 		// 	{
@@ -258,13 +253,14 @@ namespace ft
 			if (_len + 1 > _cap)
 				reserve(2 * _cap);
 			_alloc.construct(_arr + _len, val);
-			_len ++;
+			_len++;
 		}
 
 		iterator erase (iterator pos)
 		{
 			return erase(pos, pos + 1);
 		}
+
 		iterator erase (iterator first, iterator last)
 		{
 			size_type n = last - first;
@@ -313,11 +309,7 @@ namespace ft
 		x.swap(y);
 	}
 
-
 }
-
-
-
 
 
 #endif

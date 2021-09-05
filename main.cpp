@@ -7,12 +7,24 @@ int main()
 {
 	using namespace std;
 
-	std::vector<int> v(5, 10);
-	ft::Vector<int> v1(v.begin()+1, v.end());
-	ft::Vector<int> v2(v1);
-	ft::Vector<int>::const_iterator c_it = v1.begin();
-	ft::Vector<int>::iterator it = v2.begin();
-	cout << c_it - it;
+	std::vector<int> v, v1;
+	v.insert(v.begin(), 10);//n, v
+	cout << v.capacity() << endl;
+	v.insert(v.begin(), 10);//n, v
+	cout << v.capacity() << endl;
+	v.insert(v.begin(), 10, 1);//n, v
+	cout << v.capacity() << endl;
+	v1.insert(v1.begin(), v.begin(), v.begin() + 1 );
+	cout << "----" << v1.capacity() << endl;
+//	v1.insert(v1.begin(), v.begin(), v.end());
+	for(int i = 0;i < 13; i++)
+	{	v1.insert(v1.begin(), 1);
+		cout << v1.capacity() << endl;}
+	// ft::Vector<int> v1(v.begin()+1, v.end());
+	// ft::Vector<int> v2(v1);
+	// ft::Vector<int>::const_iterator c_it = v1.begin();
+	// ft::Vector<int>::iterator it = v2.begin();
+	// cout << it - c_it;
 
 	//std::vector<int> v3(v.begin()+1, v.end());
 	// std::vector<int> v4(v3);
