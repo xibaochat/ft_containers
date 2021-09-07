@@ -2,24 +2,24 @@
 #include "iterator.hpp"
 #include "const_iterator.hpp"
 #include "Utility.hpp"
-
+#include <typeinfo>     // typeid
 int main()
 {
 	using namespace std;
 
-	std::vector<int> v, v1;
-	v.insert(v.begin(), 10);//n, v
-	cout << v.capacity() << endl;
-	v.insert(v.begin(), 10);//n, v
-	cout << v.capacity() << endl;
-	v.insert(v.begin(), 10, 1);//n, v
-	cout << v.capacity() << endl;
-	v1.insert(v1.begin(), v.begin(), v.begin() + 1 );
-	cout << "----" << v1.capacity() << endl;
+	// std::vector<int> v, v1;
+	// v.insert(v.begin(), 10);//n, v
+	// cout << v.capacity() << endl;
+	// v.insert(v.begin(), 10);//n, v
+	// cout << v.capacity() << endl;
+	// v.insert(v.begin(), 10, 1);//n, v
+	// cout << v.capacity() << endl;
+	// v1.insert(v1.begin(), v.begin(), v.begin() + 1 );
+	// cout << "----" << v1.capacity() << endl;
 //	v1.insert(v1.begin(), v.begin(), v.end());
-	for(int i = 0;i < 13; i++)
-	{	v1.insert(v1.begin(), 1);
-		cout << v1.capacity() << endl;}
+	// for(int i = 0;i < 13; i++)
+	// {	v1.insert(v1.begin(), 1);
+	// 	cout << v1.capacity() << endl;}
 	// ft::Vector<int> v1(v.begin()+1, v.end());
 	// ft::Vector<int> v2(v1);
 	// ft::Vector<int>::const_iterator c_it = v1.begin();
@@ -117,4 +117,10 @@ int main()
 	// cout << " " << *c1_cIter;
     // The following line would be an error because iterator is const
 //    *c1_cIter = 200;
+
+	typedef ft::iterator_traits<int*> traits;
+	if (typeid(traits::iterator_category)==typeid(ft::RandomAccessIteratorTag))
+		std::cout << "int* is a random-access iterator";
+  return 0;
+
 }
