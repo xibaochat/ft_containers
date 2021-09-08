@@ -6,6 +6,31 @@
 int main()
 {
 	using namespace std;
+	ft::Vector<int>             vec;
+    ft::Vector<int>::reverse_iterator   it;
+
+    vec.push_back(1);
+    vec.push_back(2);
+    vec.push_back(3);
+    vec.push_back(4);
+    vec.push_back(5);
+    vec.push_back(42);
+	it = vec.rbegin();
+    std::cout << "it = vec.rend();" << std::endl;
+    std::cout << "*it = " << *it << std::endl;
+    std::cout << "*(it++) = " << *(it++) << std::endl;
+    std::cout << "*it = " << *it << std::endl;
+    std::cout << "*(it--) = " << *(it--) << std::endl;
+    std::cout << "*it = " << *it << std::endl;
+    std::cout << "*(++it) = " << *(++it) << std::endl;
+    std::cout << "*it = " << *it << std::endl;
+    std::cout << "*(--it) = " << *(--it) << std::endl;
+    std::cout << "*it = " << *it << std::endl << std::endl;
+
+
+
+
+
 
 	// std::vector<int> v, v1;
 	// v.insert(v.begin(), 10);//n, v
@@ -118,9 +143,9 @@ int main()
     // The following line would be an error because iterator is const
 //    *c1_cIter = 200;
 
-	typedef ft::iterator_traits<int*> traits;
-	if (typeid(traits::iterator_category)==typeid(ft::RandomAccessIteratorTag))
-		std::cout << "int* is a random-access iterator";
+	// typedef ft::iterator_traits<int*> traits;
+	// if (typeid(traits::iterator_category)==typeid(ft::RandomAccessIteratorTag))
+	// 	std::cout << "int* is a random-access iterator";
   return 0;
 
 }

@@ -166,10 +166,3 @@ void real_iterator()
 
 
 }
-
-int main()
-{
-	iterator_test();
-	std::cout << RED << "------------SPLIT LINE-------------" << NC << std::endl;
-	real_iterator();
-}

@@ -18,16 +18,18 @@ namespace ft
 	class Vector
 	{
 	public:
-		typedef T                       value_type;
-		typedef Allocator               allocator_type;
-		typedef size_t                  size_type;
-		typedef std::ptrdiff_t          difference_type;
-		typedef T&                      reference;
-		typedef const T&                const_reference;
-		typedef T*                      pointer;
-		typedef const T*                const_pointer;
-		typedef VectorIterator<T>       iterator;
-		typedef Const_VectorIterator<T> const_iterator;
+		typedef T                                   value_type;
+		typedef Allocator                           allocator_type;
+		typedef size_t                              size_type;
+		typedef std::ptrdiff_t                      difference_type;
+		typedef T&                                  reference;
+		typedef const T&                            const_reference;
+		typedef T*                                  pointer;
+		typedef const T*                            const_pointer;
+		typedef ft::VectorIterator<T>                   iterator;
+		typedef ft::Const_VectorIterator<T>             const_iterator;
+		typedef ft::reverse_iterator<iterator>          reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator>    const_reverse_iterator;
 
 	private:
 		typedef Vector<T> _Self;
@@ -298,6 +300,14 @@ namespace ft
 		{
 			this->clear();
 			this->insert(begin(), n, val);
+		}
+		reverse_iterator rbegin()
+		{
+			return reverse_iterator(this->end());
+		}
+		const_reverse_iterator  rbegin() const
+		{
+			return reverse_iterator(this->end());
 		}
 
 	};

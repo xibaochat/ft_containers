@@ -7,7 +7,7 @@ namespace ft
 	template <typename T>
 	class Const_VectorIterator
 	{
-	private:
+	public:
 		typedef size_t          size_type;
 		typedef std::ptrdiff_t  difference_type;
 		typedef const T         value_type;
