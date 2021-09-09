@@ -11,14 +11,14 @@ namespace ft
 		typedef size_t          size_type;
 		typedef std::ptrdiff_t  difference_type;
 		typedef const T         value_type;
-		typedef const T*        const_pointer;
-		typedef const T&        const_reference;
+		typedef const T*        pointer;
+		typedef const T&        reference;
 		typedef std::random_access_iterator_tag iterator_category;
 
 	private:
 		typedef Const_VectorIterator<T> _Self;
-		const_pointer m_ptr;
-		Const_VectorIterator(const_pointer ptr):m_ptr(ptr){}
+		pointer m_ptr;
+		Const_VectorIterator(pointer ptr):m_ptr(ptr){}
 	public:
 		/*******************************************
         *****  Member Functions (Coplien Form) *****
@@ -91,12 +91,13 @@ namespace ft
 		 ****** dereference  *****
 		 *a | a->m | *a = t | a[n]
 		*************************************************************/
-		const_reference operator*() const {return *m_ptr;}
-		const_pointer operator->() {return m_ptr;}
-		const_reference operator[](std::ptrdiff_t n){return m_ptr[n];}
+		reference operator*() const {return *m_ptr;}
+		pointer operator->() {return m_ptr;}
+		reference operator[](std::ptrdiff_t n){return m_ptr[n];}
 
 		template<typename U,  class Allocator>
 		friend class Vector;
+
 	};
 
 	/******************************************************************
@@ -104,9 +105,9 @@ namespace ft
        a + n | n + a | a - n | a - b
 	*******************************************************************/
 	template< typename T >
-	Const_VectorIterator<const T> operator+(const Const_VectorIterator<T> &a, std::ptrdiff_t n)
+	Const_VectorIterator<T> operator+(const Const_VectorIterator<T> &a, std::ptrdiff_t n)
     {
-        Const_VectorIterator<const T> tmp = a;
+        Const_VectorIterator<T> tmp = a;
         return tmp += n;
     }
 
