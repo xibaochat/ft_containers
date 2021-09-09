@@ -10,6 +10,7 @@
 #include <stdexcept>
 #include "iterator.hpp"
 #include "const_iterator.hpp"
+#include "reverse_iterator.hpp"
 #include "Utility.hpp"
 
 namespace ft
@@ -301,13 +302,24 @@ namespace ft
 			this->clear();
 			this->insert(begin(), n, val);
 		}
+
 		reverse_iterator rbegin()
 		{
 			return reverse_iterator(this->end());
 		}
+
 		const_reverse_iterator  rbegin() const
 		{
 			return reverse_iterator(this->end());
+		}
+
+		reverse_iterator rend()
+		{
+			return reverse_iterator(begin());
+		}
+		const_reverse_iterator rend() const
+		{
+			return const_reverse_iterator(begin());
 		}
 
 	};
