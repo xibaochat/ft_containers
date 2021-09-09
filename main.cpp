@@ -2,13 +2,18 @@
 #include "iterator.hpp"
 #include "const_iterator.hpp"
 #include "Utility.hpp"
+#include "reverse_iterator.hpp"
 #include <typeinfo>     // typeid
 int main()
 {
 	using namespace std;
 	ft::Vector<int>             vec;
     ft::Vector<int>::reverse_iterator   it;
+	ft::Vector<int>::const_reverse_iterator   c_it;
 
+	// vector<int>             vec;
+    // vector<int>::reverse_iterator   it;
+	// vector<int>::const_reverse_iterator   c_it;
     vec.push_back(1);
     vec.push_back(2);
     vec.push_back(3);
@@ -16,6 +21,17 @@ int main()
     vec.push_back(5);
     vec.push_back(42);
 	it = vec.rbegin();
+	c_it = it;
+
+	while (it != vec.rend())
+	{
+		std::cout << *it << std::endl;
+		it++;
+	}
+	if (it == c_it)
+		cout << "boid0" << endl;
+	else
+		cout << "boid1" << endl;
     std::cout << "it = vec.rend();" << std::endl;
     std::cout << "*it = " << *it << std::endl;
     std::cout << "*(it++) = " << *(it++) << std::endl;
