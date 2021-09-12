@@ -9,11 +9,14 @@ int main()
 {
 	using namespace std;
 	std::vector<int> v, v1;
-	cout << v.capacity();
-	v.insert(v.begin(), 10);//n, v
-//	v3.insert(v3.begin(), 1, 2);
-//	v3.insert(v3.begin(), v.begin(), v.end());
-	//cout << v3.capacity();
+	ft::vector<int> v3;
+	v.insert(v.begin(), 5, 42);//n, v
+	v3.insert(v3.begin(), 5, 42);//n, v
+	std::cout <<  (v.end() - v.begin()) << "\n" << (v3.end() - v3.begin());
+//	std::cout <<  *(v.end() - 1) << "\n" << *(v3.end() - 1);
+	// v3.insert(v3.begin(), 1, 2);
+	// v3.insert(v3.begin(), v.begin(), v.end());
+	// v3.insert(v3.begin(), v3.begin() + 2, v3.end() -3);
 
 //	v3.insert(v3.begin(), 2, 10);
 //	v3.insert(1 + v3.begin() , v.begin(), v.end());

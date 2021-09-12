@@ -42,6 +42,10 @@ namespace ft
 			return (obj);
 		}
 
+		/*******************************************
+		*****         Operator Boolean         *****
+		*****    == | != | > | >= | < | <=     *****
+		*******************************************/
 		friend bool operator==(const _Self& a, const _Self& b){return (a.m_ptr == b.m_ptr);}
 		friend bool operator!=(const _Self& a, const _Self& b){return !(a.m_ptr == b.m_ptr);}
 		friend bool operator<(const _Self& a, const _Self& b){return (a.m_ptr < b.m_ptr);}
@@ -49,8 +53,29 @@ namespace ft
 		friend bool operator>(const _Self& a, const _Self& b){return (a.m_ptr > b.m_ptr);}
 		friend bool operator>=(const _Self& a, const _Self& b){return (a.m_ptr >= b.m_ptr);}
 
+		/*******************************************
+		 *****       Operator Arithmetics       *****
+		 *****     + | - | ++ | -- | += | -=    *****
+		 *******************************************/
+		_Self & operator+=(difference_type n)
+		{
+			m_ptr += n;
+			return (*this);
+		}
+
+		_Self &operator-=(difference_type n)
+		{
+			m_ptr -= n;
+			return (*this);
+		}
+
 		template <typename U>
 		friend std::ptrdiff_t operator-( const VectorIterator<U> &a, const VectorIterator<U> &b);
+
+		VectorIterator operator-(difference_type n)
+			{
+				return (VectorIterator(m_ptr - n));
+			};
 
 		//prefix-decrease :--a
 		_Self operator--() {m_ptr--; return *this;}
@@ -62,17 +87,8 @@ namespace ft
 			return (obj);
 		}
 
-		_Self & operator+=(difference_type n)
-		{
-			m_ptr += n;
-			return (*this);
-		}
 
-		_Self &operator-=(difference_type n)
-		{
-				m_ptr -= n;
-				return (*this);
-		}
+
 		reference operator[](size_type n){return m_ptr[n];}
 
 		//cannot & const
@@ -92,13 +108,6 @@ namespace ft
 	std::ptrdiff_t operator-(const VectorIterator<T> &a, const VectorIterator<T> &b)
 	{
 		return (a.m_ptr - b.m_ptr);
-	}
-
-	template<typename T>
-	VectorIterator<T> & operator-(const VectorIterator<T> &a, std::ptrdiff_t n)
-	{
-		VectorIterator<T> t(a);
-		return t-=n;
 	}
 
 	template< typename T >

@@ -98,11 +98,17 @@ namespace ft
 		template<typename U,  class Allocator>
 		friend class vector;
 
+		_Self operator-(difference_type n)
+			{
+				return (_Self(m_ptr - n));
+			};
+
 	};
 
 	/******************************************************************
 	 ***** arithmetic operators  *****
-       a + n | n + a | a - n | a - b
+       a + n | n + a |        a - n              |   a - b
+                          inside the class
 	*******************************************************************/
 	template< typename T >
 	Const_VectorIterator<T> operator+(const Const_VectorIterator<T> &a, std::ptrdiff_t n)

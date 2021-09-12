@@ -48,7 +48,7 @@ namespace ft
 			}
 		//remplir
 		explicit vector (size_type n, const value_type& val = value_type(),
-						 const allocator_type& alloc = allocator_type()):
+						 allocator_type const & alloc = allocator_type()):
 			_arr(NULL), _len(0), _cap(0), _alloc(alloc)
 			{
 				std::cout << "constructor remplir with n and val\n";
@@ -213,42 +213,44 @@ namespace ft
 		}
 
 		template <class InputIterator>
-		void insert (iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL)//it.begin() or array
+		void insert (iterator position, InputIterator first, InputIterator last
+						  , typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL)//it.begin() or array
 		{
 			std::cout << "in that insert\n";
-			difference_type n = last - first;//nb to insert
+			difference_type n;
+			n = last - first;//nb to insert
 			if (!n)
-				return ;
-//			pointer new_arr = _alloc.allocate(n);
-// 			for(size_type i=0; first + i < last; i++)
-// 				_alloc.construct(new_arr + i, *(first + i));
-// 			difference_type index = position - this->begin();
-// 			if (_len + n > _cap)
+				 return ;
+			pointer new_arr = _alloc.allocate(n);
+			for(size_type i=0; first + i < last; i++)
+				_alloc.construct(new_arr + i, *(first + i));
+			difference_type index = position - this->begin();
+			if (_len + n > _cap)
+			{
+				// if (2 * _cap >= _len + n)
+				// 	reserve(2 * _cap);
+				// else
+				reserve(_len + n);
+			}
+			for(ptrdiff_t i = _len - 1; i >= index; i--)
+			{
+				_alloc.construct(_arr + i + n, _arr[i]);
+				_alloc.destroy(_arr + i);
+			}
+// 			for(InputIterator it = first; it != last; it++)
 // 			{
-// 				// if (2 * _cap >= _len + n)
-// 				// 	reserve(2 * _cap);
-// 				// else
-// 				reserve(_len + n);
+// //				_alloc.construct(_arr + index, *it);
+// 				_alloc.construct(_arr + index, new_arr[index]);
+// 				_alloc.destroy(new_arr + index);
+// 				index++;
 // 			}
-// 			for(ptrdiff_t i = _len - 1; i >= index; i--)
-// 			{
-// 				_alloc.construct(_arr + i + n, _arr[i]);
-// 				_alloc.destroy(_arr + i);
-// 			}
-// // 			for(InputIterator it = first; it != last; it++)
-// // 			{
-// // //				_alloc.construct(_arr + index, *it);
-// // 				_alloc.construct(_arr + index, new_arr[index]);
-// // 				_alloc.destroy(new_arr + index);
-// // 				index++;
-// // 			}
-// 			for(ptrdiff_t i = 0; i < n; i++)
-// 			{
-// 				_alloc.construct(_arr + index + i, new_arr[i]);
-// 				_alloc.destroy(new_arr + i);
-// 			}
-// 			_alloc.deallocate(new_arr, n);
-// 			_len += n;
+			for(ptrdiff_t i = 0; i < n; i++)
+			{
+				_alloc.construct(_arr + index + i, new_arr[i]);
+				_alloc.destroy(new_arr + i);
+			}
+			_alloc.deallocate(new_arr, n);
+			_len += n;
 		}
 
 		void reserve (size_type n)
