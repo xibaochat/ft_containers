@@ -96,7 +96,7 @@ namespace ft
 		reference operator[](std::ptrdiff_t n){return m_ptr[n];}
 
 		template<typename U,  class Allocator>
-		friend class Vector;
+		friend class vector;
 
 	};
 

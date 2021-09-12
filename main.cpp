@@ -1,55 +1,22 @@
-#include "Vector.hpp"
+#include "vector.hpp"
 #include "iterator.hpp"
 #include "const_iterator.hpp"
 #include "Utility.hpp"
 #include "reverse_iterator.hpp"
-#include <typeinfo>     // typeid
+#include "enable_if.hpp"
+
 int main()
 {
 	using namespace std;
-	ft::Vector<int>             vec;
-    ft::Vector<int>::reverse_iterator   it;
-	ft::Vector<int>::const_reverse_iterator   c_it;
+	std::vector<int> v, v1;
+	cout << v.capacity();
+	v.insert(v.begin(), 10);//n, v
+//	v3.insert(v3.begin(), 1, 2);
+//	v3.insert(v3.begin(), v.begin(), v.end());
+	//cout << v3.capacity();
 
-	// vector<int>             vec;
-    // vector<int>::reverse_iterator   it;
-	// vector<int>::const_reverse_iterator   c_it;
-    vec.push_back(1);
-    vec.push_back(2);
-    vec.push_back(3);
-    vec.push_back(4);
-    vec.push_back(5);
-    vec.push_back(42);
-	it = vec.rbegin();
-	c_it = it;
-
-	while (it != vec.rend())
-	{
-		std::cout << *it << std::endl;
-		it++;
-	}
-	if (it == c_it)
-		cout << "boid0" << endl;
-	else
-		cout << "boid1" << endl;
-    std::cout << "it = vec.rend();" << std::endl;
-    std::cout << "*it = " << *it << std::endl;
-    std::cout << "*(it++) = " << *(it++) << std::endl;
-    std::cout << "*it = " << *it << std::endl;
-    std::cout << "*(it--) = " << *(it--) << std::endl;
-    std::cout << "*it = " << *it << std::endl;
-    std::cout << "*(++it) = " << *(++it) << std::endl;
-    std::cout << "*it = " << *it << std::endl;
-    std::cout << "*(--it) = " << *(--it) << std::endl;
-    std::cout << "*it = " << *it << std::endl << std::endl;
-
-
-
-
-
-
-	// std::vector<int> v, v1;
-	// v.insert(v.begin(), 10);//n, v
+//	v3.insert(v3.begin(), 2, 10);
+//	v3.insert(1 + v3.begin() , v.begin(), v.end());
 	// cout << v.capacity() << endl;
 	// v.insert(v.begin(), 10);//n, v
 	// cout << v.capacity() << endl;
@@ -61,10 +28,10 @@ int main()
 	// for(int i = 0;i < 13; i++)
 	// {	v1.insert(v1.begin(), 1);
 	// 	cout << v1.capacity() << endl;}
-	// ft::Vector<int> v1(v.begin()+1, v.end());
-	// ft::Vector<int> v2(v1);
-	// ft::Vector<int>::const_iterator c_it = v1.begin();
-	// ft::Vector<int>::iterator it = v2.begin();
+	// ft::vector<int> v1(v.begin()+1, v.end());
+	// ft::vector<int> v2(v1);
+	// ft::vector<int>::const_iterator c_it = v1.begin();
+	// ft::vector<int>::iterator it = v2.begin();
 	// cout << it - c_it;
 
 	//std::vector<int> v3(v.begin()+1, v.end());
@@ -73,19 +40,18 @@ int main()
 	// std::vector<int>::iterator itt = v3.begin();
 
 
-	//ft::Vector<int> v3;
-//	v3.insert(1 + v3.begin() , v.begin(), v.end());
+
 //	cout << *(v3.begin() + 1) << "\n";
-//	ft::Vector<int> v4(v3);
-	//ft::Vector<int>::const_iterator c_it = v3.begin();
+//	ft::vector<int> v4(v3);
+	//ft::vector<int>::const_iterator c_it = v3.begin();
 	// while (it < v4.end())
 	// 	cout << " " << *it++ << ", ";
 
-//	ft::Vector<int> myvector(v.begin(), v.end());
-	// ft::Vector<int> myvector1(myvector);
+//	ft::vector<int> myvector(v.begin(), v.end());
+	// ft::vector<int> myvector1(myvector);
 //
-	//ft::Vector<int> myvector2(4, 100);
-	// ft::Vector<int>::iterator it;
+	//ft::vector<int> myvector2(4, 100);
+	// ft::vector<int>::iterator it;
 	// int arr[3] = {1,2,3};
 	// it = myvector.begin();
 	// myvector.insert ( it , v.begin(), v.end() );
@@ -96,7 +62,7 @@ int main()
 	// // v.push_back(1);
 	// // v.push_back(2);
 	// // cout << "The vector v contains elements:";
-	// ft::Vector<int>::const_iterator v_cIter;
+	// ft::vector<int>::const_iterator v_cIter;
 	// v_cIter = myvector.begin();
     // while (it < myvector.end())
     //     cout << " " << *it++ << ", ";

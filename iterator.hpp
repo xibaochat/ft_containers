@@ -83,7 +83,7 @@ namespace ft
 		// }
 
 		template<typename U,  class Allocator>
-		friend class Vector;
+		friend class vector;
 		/*Vector can visit all attribute*/
 
 	};
