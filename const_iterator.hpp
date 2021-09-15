@@ -18,11 +18,11 @@ namespace ft
 	private:
 		typedef Const_VectorIterator<T> _Self;
 		pointer m_ptr;
-		Const_VectorIterator(pointer ptr):m_ptr(ptr){}
 	public:
 		/*******************************************
         *****  Member Functions (Coplien Form) *****
         *******************************************/
+		Const_VectorIterator(pointer ptr):m_ptr(ptr){}
 		Const_VectorIterator():m_ptr(NULL){}
 		Const_VectorIterator(const _Self &obj):m_ptr(obj.m_ptr){}//a(b)
 		Const_VectorIterator(VectorIterator<T> obj)

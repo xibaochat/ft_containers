@@ -72,7 +72,11 @@ namespace ft
 			this->insert(begin(), x.begin(), x.end());
 		}
 
-		~vector(){this->clear();}
+		~vector(){
+			this->clear();
+			_alloc.deallocate(_arr, _cap);
+			_arr = NULL;
+		}
 
 		_Self &operator=(const _Self &src)
 		{
@@ -157,10 +161,10 @@ namespace ft
 			{
 				_alloc.destroy(_arr + i);
 			}
-			_alloc.deallocate(_arr, _cap);
+			//	_alloc.deallocate(_arr, _cap);
 			_len = 0;
-			_cap = 0;
-			_arr = NULL;
+			// _cap = 0;
+			// _arr = NULL;
 		}
 
 		iterator insert (iterator position, const value_type& val)
@@ -227,10 +231,10 @@ namespace ft
 			difference_type index = position - this->begin();
 			if (_len + n > _cap)
 			{
-				// if (2 * _cap >= _len + n)
-				// 	reserve(2 * _cap);
-				// else
-				reserve(_len + n);
+				if (2 * _cap >= _len + n)
+					reserve(2 * _cap);
+				else
+					reserve(_len + n);
 			}
 			for(ptrdiff_t i = _len - 1; i >= index; i--)
 			{
@@ -305,7 +309,7 @@ namespace ft
 			std::swap(this->_arr, x._arr);
 			std::swap(this->_len, x._len);
 			std::swap(this->_cap, x._cap);
-		}
+		}//https://www.cplusplus.com/reference/utility/swap/
 		allocator_type get_allocator() const
 		{
 			return (this->_alloc);
