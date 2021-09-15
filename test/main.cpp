@@ -1,10 +1,4 @@
-#include "../vector.hpp"
-# include <sys/stat.h>
-# include <sys/types.h>
-# include <iostream>
-# include <string>
-# include <fstream>
-# include "test.hpp"
+#include "../containers/vector.hpp"
 
 template <class T>
 std::string equalContent(
@@ -153,62 +147,48 @@ void test_vector()
 	std::fstream fs;
 
 	{
-		fs.open("./vectors_output/constructor_default", std::fstream::in | std::fstream::out | std::fstream::trunc);
-	std::cout << "test_vector_construct(): " << ((printVectorAttributes(fs, stl_v, my_v) == true) ? "[OK]" : "[NOP]") << std::endl;
-	fs.close();
+		show_res("./vectors_output/constructor_default", "test_vector_construct ", fs, stl_v, my_v);
 	}
 	{std::vector<int> *p = new std::vector<int>;
 	ft::vector<int>  *my_p = new ft::vector<int>;
-	fs.open("./vectors_output/constructor_default_ptr", std::fstream::in | std::fstream::out | std::fstream::trunc);
-	std::cout << "test_vector_constructor_ptr(): " << ((printVectorAttributes(fs, *p, *my_p) == true) ? "[OK]" : "[NOP]") << std::endl;
-	fs.close();
+	show_res("./vectors_output/constructor_default_ptr", "test_vector_constructor_ptr ", fs, *p, *my_p);
 	delete p;
 	delete my_p;
 	}
 	{
 		std::vector<int> stl_vector_fill(8);
 		ft::vector<int>  my_vector_fill(8);
-		fs.open("./vectors_output/constructor_fill_no_val", std::fstream::in | std::fstream::out | std::fstream::trunc);
-		std::cout << "test_vector_constructor_fill_no_val(): " << ((printVectorAttributes(fs, stl_vector_fill, my_vector_fill) == true) ? "[OK]" : "[NOP]") << std::endl;
-		fs.close();
+		show_res("./vectors_output/constructor_fill_no_val", "test_vector_constructor_fill_no_val", fs, stl_vector_fill, my_vector_fill);
 	}
 	{
 		std::vector<int> stl_vector_fill_v(4, 8);
 		ft::vector<int> my_vector_fill_v(4, 8);
-		fs.open("./vectors_output/constructor_fill_with_val", std::fstream::in | std::fstream::out | std::fstream::trunc);
-		std::cout << "test_vector_constructor_fill_with_val(): " << ((printVectorAttributes(fs, stl_vector_fill_v, my_vector_fill_v) == true) ? "[OK]" : "[NOP]") << std::endl;
-		fs.close();
+		show_res("./vectors_output/constructor_fill_with_val", "test_vector_constructor_fill_with_val", fs, stl_vector_fill_v, my_vector_fill_v);
 	}
 	{
 		std::vector<int> stl_vector_fill_v(4, 8);
 		std::vector<int> stl_vector_range(stl_vector_fill_v.begin(), stl_vector_fill_v.end());
 		ft::vector<int> my_vector_range(stl_vector_fill_v.begin(), stl_vector_fill_v.end());
-		fs.open("./vectors_output/constructor_range", std::fstream::in | std::fstream::out | std::fstream::trunc);
-		std::cout << "test_vector_constructor_range(): " << ((printVectorAttributes(fs, stl_vector_range, my_vector_range) == true) ? "[OK]" : "[NOP]") << std::endl;
-		fs.close();
+		show_res("./vectors_output/constructor_range", "test_vector_constructor_range", fs, stl_vector_range, my_vector_range);
 	}
 	{
 		std::vector<int> stl_vector(4, 8);
 		ft::vector<int> my_vector(stl_vector.begin(), stl_vector.end());
 		ft::vector<int>my_v(my_vector);
-		fs.open("./vectors_output/constructor_copy", std::fstream::in | std::fstream::out | std::fstream::trunc);
-		std::cout << "test_vector_constructor_copy(): " << ((printVectorAttributes(fs, stl_vector, my_v) == true) ? "[OK]" : "[NOP]") << std::endl;
-		fs.close();
+		show_res("./vectors_output/constructor_copy", "test_vector_constructor_copy", fs, stl_vector, my_v);
 	}
 	{
 		int arr[5] = {1, 3, 42, 88, 100};
 		std::vector<int> stl_vector(arr, arr + 5);
 		ft::vector<int> my_vector(arr, arr + 5);
-		fs.open("./vectors_output/constructor_from_arr", std::fstream::in | std::fstream::out | std::fstream::trunc);
-		std::cout << "test_vector_constructor_from_arr(): " << ((printVectorAttributes(fs, stl_vector, my_vector) == true) ? "[OK]" : "[NOP]") << std::endl;
-		fs.close();
+		show_res("./vectors_output/constructor_from_arr", "test_vector_constructor_from_arr ", fs, stl_vector, my_vector);
 	}
 	{
 		int arr[5] = {1, 3, 42, 88, 100};
 		std::vector<int> stl_vector(arr, arr + 5);
 		std::vector<int>::iterator it = stl_vector.begin();
 		ft::vector<int> my_v(it, it + 5);
-		show_res("./vectors_output/constructor_range_iterator", "test_vector_constructor_range_iterator(): ", fs, stl_vector, my_v);
+		show_res("./vectors_output/constructor_range_iterator", "test_vector_constructor_range_iterator ", fs, stl_vector, my_v);
 	}
 	{
 		std::vector<int> stl_vector(4, 8);
@@ -544,7 +524,24 @@ void test_vector()
 		ft::vector<char> my_foo(3, 'a');
 		ft::vector<char> my_bar (5, 'b');   // five chars with a value of 200
 		my_foo.swap(my_bar);
-		show_res("./vectors_output/swap", "test_swap", fs, foo, my_foo);
+		show_res("./vectors_output/swap_0", "test_swap_0", fs, foo, my_foo);
+	}
+	{
+		int range_array_one[] = {144, 335, 5, 0, -54};
+        int range_array_two[] = {47, -98, 58, 611, -4};
+
+        std::vector<int>::iterator stl_iterator_beg_one(&(range_array_one[0]));
+        std::vector<int>::iterator stl_iterator_beg_two(&(range_array_two[0]));
+        ft::vector<int>::iterator ft_iterator_beg_one(&(range_array_one[0]));
+        ft::vector<int>::iterator ft_iterator_beg_two(&(range_array_two[0]));
+
+        std::vector<int> stl_swap_one(stl_iterator_beg_one, stl_iterator_beg_one + 5);
+        std::vector<int> stl_swap_two(stl_iterator_beg_two, stl_iterator_beg_two + 5);
+        ft::vector<int> ft_swap_one(ft_iterator_beg_one, ft_iterator_beg_one + 5);
+        ft::vector<int> ft_swap_two(ft_iterator_beg_two, ft_iterator_beg_two + 5);
+        std::swap(stl_swap_one, stl_swap_two);
+        ft::swap(ft_swap_one, ft_swap_two);
+		show_res("./vectors_output/swap_1", "test_swap_1", fs, stl_swap_one, ft_swap_one);
 	}
 	/*clear*/
 	{
@@ -563,6 +560,70 @@ void test_vector()
 		my_v.push_back (1101);
 		my_v.push_back (2202);
 		show_res("./vectors_output/clear", "test_clear", fs, stl_v, my_v);
+	}
+/*get_allocator()*/
+	{
+		std::vector<int> myvector;
+		int * p;
+		unsigned int i;
+		p = myvector.get_allocator().allocate(5);
+		for (i=0; i<5; i++) myvector.get_allocator().construct(&p[i],i);
+
+		ft::vector<int> my_v;
+		int * my_p;
+		unsigned int my_i;
+		my_p = my_v.get_allocator().allocate(5);
+		for (my_i=0; my_i<5; my_i++) my_v.get_allocator().construct(&my_p[my_i], my_i);
+		for (my_i=0; my_i<5; my_i++) my_v.get_allocator().destroy(&my_p[my_i]);
+		show_res("./vectors_output/get_allocator", "test_get_allocator", fs, myvector, my_v);
+		my_v.get_allocator().deallocate(my_p,5);
+		myvector.get_allocator().deallocate(p,5);
+	}
+	/*operator compare*/
+	{
+		std::cout << YELLOW << "operator tester == != < <= > >=" << NC << std::endl;
+		ft::vector <int> v1, v2;
+		if (v1==v2 && !(v1!=v2) && !(v1<v2) && v1<=v2 && !(v1>v2) && v1>=v2)
+			std::cout << "empty vector" << GREEN << "[OK]" << NC << std::endl;
+		else
+			std::cout << "empty vector" << RED << "[NOP]" << NC << std::endl;
+	}
+	{
+		ft::vector <int> v1, v2;
+		v1.push_back( 1 );
+		v2.push_back( 2 );
+		if (!(v1==v2) && (v1!=v2) && (v1<v2) && v1<=v2 && !(v1>v2) && !(v1>=v2))
+			std::cout << "non empty vector_0" << GREEN << "[OK]" << NC << std::endl;
+		else
+			std::cout << "non empty vector_0" << RED << "[NOP]" << NC << std::endl;
+	}
+	{
+		ft::vector <int> v1, v2;
+		v1.push_back( 1 );
+		v1.push_back( 2 );
+		v1.push_back( 4 );
+
+		v2.push_back( 1 );
+		v2.push_back( 3 );
+
+		if (!(v1==v2) && (v1!=v2) && (v1<v2) && v1<=v2 && !(v1>v2) && !(v1>=v2))
+			std::cout << "non empty vector_1" << GREEN << "[OK]" << NC << std::endl;
+		else
+			std::cout << "non empty vector_1" << RED << "[NOP]" << NC << std::endl;
+	}
+	{
+		ft::vector <int> v1, v2;
+		v1.push_back( 1 );
+		v1.push_back( 2 );
+		v1.push_back( 4 );
+
+		v2.push_back( 1 );
+		v2.push_back( 3 );
+
+		if (!(v1==v2) && (v1!=v2) && (v2 > v1) && (v2 >= v1) && (v1<v2) && !(v2<=v1))
+			std::cout << "non empty vector_2" << GREEN << "[OK]" << NC << std::endl;
+		else
+			std::cout << "non empty vector_2" << RED << "[NOP]" << NC << std::endl;
 	}
 }
 
@@ -587,6 +648,30 @@ int main()
 {
 //	vector_iterator_test();
 //	vector_reverse_iterator_test();
-	test_vector();
+//	test_vector();
+	const int size = 5;
+	ft::vector<int> vct(size);
+	ft::vector<int>::reverse_iterator it = vct.rbegin();
+	ft::vector<int>::const_reverse_iterator ite = vct.rbegin();
+
+	for (int i = 0; i < size; ++i)
+		it[i] = (size - i) * 5;
+
+	it = it + 5;
+	it = 1 + it;
+	it = it - 4;
+	std::cout << *(it += 2) << std::endl;
+	std::cout << *(it -= 1) << std::endl;
+
+	*(it -= 2) = 42;
+	*(it += 2) = 21;
+
+	std::cout << "const_ite +=/-=: " << *(ite += 2) << " | " << *(ite -= 2) << std::endl;
+
+	std::cout << "(it == const_it): " << (ite == it) << std::endl;
+	std::cout << "(const_ite - it): " << (ite - it) << std::endl;
+	std::cout << "(ite + 3 == it): " << (ite + 3 == it) << std::endl;
+
+
 
 }
