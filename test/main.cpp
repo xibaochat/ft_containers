@@ -644,33 +644,72 @@ void test_vector()
 //	stl_reverse_iterator_bool_test();
 //}
 
+template <typename T>
+void	printSize(ft::vector<T> const &vct, bool print_content = 1)
+{
+	std::cout << "size: " << vct.size() << std::endl;
+	std::cout << "capacity: " << vct.capacity() << std::endl;
+	std::cout << "max_size: " << vct.max_size() << std::endl;
+	if (print_content)
+	{
+		typename ft::vector<T>::const_iterator it = vct.begin();
+		typename ft::vector<T>::const_iterator ite = vct.end();
+		std::cout << std::endl << "Content is:" << std::endl;
+		for (; it != ite; ++it)
+			std::cout << "- " << *it << std::endl;
+	}
+	std::cout << "###############################################" << std::endl;
+}
+
 int main()
 {
 //	vector_iterator_test();
 //	vector_reverse_iterator_test();
 //	test_vector();
-	const int size = 5;
-	ft::vector<int> vct(size);
-	ft::vector<int>::reverse_iterator it = vct.rbegin();
-	ft::vector<int>::const_reverse_iterator ite = vct.rbegin();
+	ft::vector<int> vct(5);
+	ft::vector<int>::iterator it = vct.begin(), ite = vct.end();
 
-	for (int i = 0; i < size; ++i)
-		it[i] = (size - i) * 5;
+	std::cout << "len: " << (ite - it) << std::endl;
+	for (; it != ite; ++it)
+		*it = (ite - it);
 
-	it = it + 5;
-	it = 1 + it;
-	it = it - 4;
-	std::cout << *(it += 2) << std::endl;
-	std::cout << *(it -= 1) << std::endl;
+	it = vct.begin();
+	std::cout << ite - it << "\n";
+	std::cout << "5555 " << *ite << " " << *it << "\n";
+	ft::vector<int> vct_range(it, --(--ite));
+	std::cout << *ite << " " << *it << "\n";
+	std::cout << ite - it << "\n";
+	for (int i = 0; it != ite; ++it)
+		*it = ++i * 5;
 
-	*(it -= 2) = 42;
-	*(it += 2) = 21;
+	it = vct.begin();
 
-	std::cout << "const_ite +=/-=: " << *(ite += 2) << " | " << *(ite -= 2) << std::endl;
+	ft::vector<int> vct_copy(vct);
+	for (int i = 0; it != ite; ++it)
+	{
+		std::cout << "before " << *it << "\n";
+		*it = ++i * 7;
+		std::cout << *it << ", ";
+	}
 
-	std::cout << "(it == const_it): " << (ite == it) << std::endl;
-	std::cout << "(const_ite - it): " << (ite - it) << std::endl;
-	std::cout << "(ite + 3 == it): " << (ite + 3 == it) << std::endl;
+	vct_copy.push_back(42);
+	vct_copy.push_back(21);
+
+	std::cout << "\t-- PART ONE --" << std::endl;
+	printSize(vct);
+	printSize(vct_range);
+	printSize(vct_copy);
+
+	vct = vct_copy;
+	vct_copy = vct_range;
+	vct_range.clear();
+
+	std::cout << "\t-- PART TWO --" << std::endl;
+	printSize(vct);
+	printSize(vct_range);
+	printSize(vct_copy);
+
+
 
 
 
