@@ -82,6 +82,7 @@ namespace ft
 				m_ptr--;
 				return *this;
 			}
+
 		//post-decrease :a--
 		_Self operator--(int)
 		{
