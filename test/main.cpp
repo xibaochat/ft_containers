@@ -627,22 +627,19 @@ void test_vector()
 	}
 }
 
-// void vector_iterator_test()
-// {
-// 	iterator_test();
-// 	std::cout << RED << "------------SPLIT LINE-------------" << NC << std::endl;
-// 	real_iterator();
-// }
+template <typename T>
+std::string printPair(const T &iterator, bool nl = true, std::ostream &o = std::cout)
+{
+    o << "value: " << *iterator;
+    if (nl)
+        o << std::endl;
+    return ("");
+}
 
-// void vector_reverse_iterator_test()
-// {
-// 	// reverse_iterator_incrementers();
-// 	// stl_reverse_iterator_incrementers();
-// 	//reverse_iterator_arithmetics();
-// 	//stl_reverse_iterator_arithmetics();
-//	reverse_iterator_bool_test();
-//	stl_reverse_iterator_bool_test();
-//}
+void	is_empty(ft::vector<int> const &vct)
+{
+	std::cout << "is_empty: " << vct.empty() << std::endl;
+}
 
 template <typename T>
 void	printSize(ft::vector<T> const &vct, bool print_content = 1)
@@ -660,57 +657,28 @@ void	printSize(ft::vector<T> const &vct, bool print_content = 1)
 	}
 	std::cout << "###############################################" << std::endl;
 }
+// void vector_iterator_test()
+// {
+// 	iterator_test();
+// 	std::cout << RED << "------------SPLIT LINE-------------" << NC << std::endl;
+// 	real_iterator();
+// }
+
+// void vector_reverse_iterator_test()
+// {
+// 	// reverse_iterator_incrementers();
+// 	// stl_reverse_iterator_incrementers();
+// 	//reverse_iterator_arithmetics();
+// 	//stl_reverse_iterator_arithmetics();
+//	reverse_iterator_bool_test();
+//	stl_reverse_iterator_bool_test();
+//}
+
+
 
 int main()
 {
 //	vector_iterator_test();
 //	vector_reverse_iterator_test();
-//	test_vector();
-	ft::vector<int> vct(5);
-	ft::vector<int>::iterator it = vct.begin(), ite = vct.end();
-
-	std::cout << "len: " << (ite - it) << std::endl;
-	for (; it != ite; ++it)
-		*it = (ite - it);
-
-	it = vct.begin();
-	std::cout << ite - it << "\n";
-	std::cout << "5555 " << *ite << " " << *it << "\n";
-	ft::vector<int> vct_range(it, --(--ite));
-	std::cout << *ite << " " << *it << "\n";
-	std::cout << ite - it << "\n";
-	for (int i = 0; it != ite; ++it)
-		*it = ++i * 5;
-
-	it = vct.begin();
-
-	ft::vector<int> vct_copy(vct);
-	for (int i = 0; it != ite; ++it)
-	{
-		std::cout << "before " << *it << "\n";
-		*it = ++i * 7;
-		std::cout << *it << ", ";
-	}
-
-	vct_copy.push_back(42);
-	vct_copy.push_back(21);
-
-	std::cout << "\t-- PART ONE --" << std::endl;
-	printSize(vct);
-	printSize(vct_range);
-	printSize(vct_copy);
-
-	vct = vct_copy;
-	vct_copy = vct_range;
-	vct_range.clear();
-
-	std::cout << "\t-- PART TWO --" << std::endl;
-	printSize(vct);
-	printSize(vct_range);
-	printSize(vct_copy);
-
-
-
-
-
+	test_vector();
 }

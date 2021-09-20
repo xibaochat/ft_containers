@@ -93,13 +93,28 @@ namespace ft
 		{
 			if (n < _len)
 				erase(begin() + n, end());
-			else
-				insert(end(), n - _len, val);
+			else if (n > _len)
+			{
+				if (n <= _cap)
+				{
+					for (size_type i = _len; i < n; i++)
+						_alloc.construct(_arr + i + 1, val);
+				}
+				else
+				{
+					if (2 * _len < n)
+						reserve(n);
+					else
+						reserve(2 * _len);
+					for (size_type i = _len; i < n; i++)
+						_alloc.construct(_arr + i, val);
+				}
+			}
+			_len = n;
 		}
 
 		reference operator[] (size_type n){return _arr[n];}
 		const_reference operator[] (size_type n) const{return _arr[n];}
-
 
 		bool empty() const {return !_len;}
 		size_type capacity() const{return _cap;}
@@ -157,8 +172,10 @@ namespace ft
 			int n = 1;
 			if (_len + n > _cap)
 			{
-				if (2 * _cap >= _len + n)
-					reserve(2 * _cap);
+				//if (2 * _cap >= _len + n)
+//					reserve(2 * _cap);
+				if (2 * _len >= n + _cap)
+					reserve(2 * _len);
 				else
 					reserve(_len + n);
 			}
@@ -180,8 +197,8 @@ namespace ft
 			difference_type index = position - this->begin();
 			if (_len + n > _cap)
 			{
-				if (2 * _cap >= _len + n)
-					reserve(2 * _cap);
+				if (2 * _len >= n + _cap)
+					reserve(2 * _len);
 				else
 					reserve(_len + n);
 			}
@@ -212,8 +229,8 @@ namespace ft
 			difference_type index = position - this->begin();
 			if (_len + n > _cap)
 			{
-				if (2 * _cap >= _len + n)
-					reserve(2 * _cap);
+				if (2 * _len >= n + _cap)
+					reserve(2 * _len);
 				else
 					reserve(_len + n);
 			}
@@ -222,13 +239,6 @@ namespace ft
 				_alloc.construct(_arr + i + n, _arr[i]);
 				_alloc.destroy(_arr + i);
 			}
-// 			for(InputIterator it = first; it != last; it++)
-// 			{
-// //				_alloc.construct(_arr + index, *it);
-// 				_alloc.construct(_arr + index, new_arr[index]);
-// 				_alloc.destroy(new_arr + index);
-// 				index++;
-// 			}
 			for(ptrdiff_t i = 0; i < n; i++)
 			{
 				_alloc.construct(_arr + index + i, new_arr[i]);
@@ -260,6 +270,7 @@ namespace ft
 				reserve(1);
 			if (_len + 1 > _cap)
 			 	reserve(2 * _cap);
+			//	reserve(2 * _len);
 			_alloc.construct(_arr + _len, val);
 			_len++;
 		}
@@ -300,7 +311,6 @@ namespace ft
 		void assign (InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL)
 		{
 			this->clear();
-//			this->insert(begin(), first, last);
 			size_t n = last - first;
 			if (n > _cap)
                 reserve(n);
@@ -355,6 +365,8 @@ namespace ft
 	template <class T, class Alloc>
 	bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 	{
+		if (lhs.size() != rhs.size())
+			return (false);
 		return (ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
 	}
 	template <class T, class Alloc>

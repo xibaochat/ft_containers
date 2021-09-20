@@ -80,7 +80,6 @@ namespace ft
 		_Self operator--()
 			{
 				m_ptr--;
-				std::cout << "in ieta " << *m_ptr << "\n";
 				return *this;
 			}
 		//post-decrease :a--
@@ -90,7 +89,6 @@ namespace ft
 			m_ptr--;
 			return (obj);
 		}
-
 
 
 		reference operator[](size_type n){return m_ptr[n];}
