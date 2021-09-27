@@ -4,33 +4,22 @@
 #include "main.hpp"
 namespace ft
 {
-	enum Color { red, black };
-	template <typename T> // T is pair
-	struct Node
-	{
-		T value;
-		Node* parent;
-		Node* left;
-		Node* right;
-		Color color;
-		Node(const T &p, Node* parent_, Node* left_, Node* right_):value(p), parent(parent_), left(left_), right(right_){}
-	};
-
-	template <typename Node, typename P>
+	template <typename Node_type> /*will put red-black-tree this type of node inside*/
 	class bidirectional_iterator
 	{
-		template<typename U, typename T>
+		template<typename U>
 		friend class Const_Bidirectional_iterator;
 	public:
 		typedef size_t                          size_type;
-		typedef P                               value_type;
-		typedef P&                              reference;
-		typedef P*                              pointer;
+		typedef Node_type                       value_type;
+		typedef typename Node_type::value_type  pair;
+		typedef pair&                           reference;
+		typedef pair*                           pointer;
 		typedef std::ptrdiff_t                  difference_type;
 		typedef std::bidirectional_iterator_tag iterator_category;
 	private:
-		typedef bidirectional_iterator<Node,P>       _Self;
-		typedef Node                               _node;
+		typedef bidirectional_iterator<Node_type>       _Self;
+		typedef Node_type                               _node;
 
 		_node *_n;
 	public:

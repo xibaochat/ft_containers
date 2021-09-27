@@ -24,5 +24,8 @@
 # include "equal.hpp"
 # include "iterator_traits.hpp"
 # include "Utility.hpp"
-
+# include "bidirectional_iterator.hpp"
+# include "const_bidirectional_iterator.hpp"
+# include "pair.hpp"
+# include "red_black_tree.hpp"
 #endif

@@ -5,27 +5,27 @@
 
 namespace ft
 {
-	template <typename Node, typename P>
+	template <typename Node>
 	class bidirectional_iterator;
-	template <typename Node, typename P>
+	template <typename Node>
 	class Const_Bidirectional_iterator
 	{
 	public:
 		typedef size_t size_type;
 		typedef std::ptrdiff_t difference_type;
-		typedef const P value_type;
-		typedef const P& reference;
-		typedef P* pointer;
+		typedef typename Node::value  pair;
+		typedef const pair& reference;
+		typedef pair* pointer;
 		typedef std::bidirectional_iterator_tag iterator_category;
 	private:
-		typedef Const_Bidirectional_iterator<Node, P> _Self;
+		typedef Const_Bidirectional_iterator<Node> _Self;
 		typedef Node _node;
 		const _node*       _n;
 	public:
 		Const_Bidirectional_iterator():_n(NULL){}
 		Const_Bidirectional_iterator(const _node* ptr):_n(ptr){}/*node is const*/
 		Const_Bidirectional_iterator(const _Self &obj):_n(obj._n){}
-		Const_Bidirectional_iterator(bidirectional_iterator<Node, P> obj)
+		Const_Bidirectional_iterator(bidirectional_iterator<Node> obj)
 		{
 			_n = obj._n;
 		}
@@ -35,14 +35,14 @@ namespace ft
 			_n = src._n;
 			return *this;
 		}
-		_Self &operator=(bidirectional_iterator<Node, P> obj)
+		_Self &operator=(bidirectional_iterator<Node> obj)
 		{
 			_n = obj._n;
 			return *this;
 		}
 
 		reference operator*() const {return _n->value;}
-		P* operator->(){return &_n->value;}
+		pointer operator->(){return &_n->value;}
 
 		friend bool operator==(const _Self& a, const _Self& b){return (a._n == b._n);}
 		friend bool operator!=(const _Self& a, const _Self& b){return !(a._n == b._n);}
