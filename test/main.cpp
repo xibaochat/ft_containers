@@ -1,4 +1,5 @@
 #include "../containers/vector.hpp"
+#include "../containers/map.hpp"
 
 template <class T>
 std::string equalContent(

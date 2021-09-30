@@ -6,7 +6,7 @@ namespace ft
 {
 	//           key_type	, mapped_type,  key_compare
  	template<class Key, class T, class Compare = std::less<Key>,
-			 class Allocator = std::allocator<ft ::pair<const Key, T>>>
+			 class Allocator = std::allocator<ft ::pair<const Key, T> > >
 	class map
 	{
 	public:
@@ -23,7 +23,30 @@ namespace ft
 		typedef Allocator                                 allocator_type;
 		//it
 
-	}
+		key_compare key_comp() const
+		{
+			return Compare();
+		}
+//		template <class Key, class T, class Compare, class Alloc>
+		class value_compare: std::binary_function<value_type,value_type,bool>
+		{
+			friend class map;
+		protected:
+			Compare comp;//obj from std::less
+			value_compare (Compare c) : comp(c) {}  // constructed with map's comparison object
+		public:
+			bool operator() (const value_type& x, const value_type& y) const
+     		{
+				return comp(x.first, y.first);
+  			}
+		};
+
+		value_compare value_comp() const
+		{
+			return value_comp(Compare());
+		}
+
+	};
 
 
 
