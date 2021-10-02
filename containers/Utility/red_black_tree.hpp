@@ -9,6 +9,7 @@ namespace ft
 	template <typename T> // T is pair
 	struct Node
 	{
+		typedef T   value_type;
 		T value;
 		Node* parent;
 		Node* left;
@@ -36,10 +37,11 @@ namespace ft
 		typedef std::size_t                              size_type;
 		typedef std::allocator<Node>      allocator_type;
 	private:
-		/*mark*/
+		/*-----------------mark?*/
 		typedef Node*                     node_pointer;
 		node_pointer                      _root;
 		node_pointer                      _nil;
+		//a special Node object used to indicate an absent child or parent node
 		size_type                         _size;
 		key_compare                       _comp;
 		allocator_type                    _alloc;
@@ -71,11 +73,11 @@ namespace ft
 				_root = _alloc.allocate(1);
 				_alloc.construct(_root, Node(E(), NULL, NULL, NULL, black));
 				_nil = _root;
-				//insert(x.begin(), x.end());
+				insert(x.begin(), x.end());
 			}
 		~red_black_tree()
 		{
-//			clear();
+			clear();
 			_alloc.destroy(_nil);
 			_alloc.deallocate(_nil, 1);
 		}
@@ -138,14 +140,40 @@ namespace ft
 		{
 			return _alloc.max_size();
 		}
-		// ft::pair<iterator,bool> insert (const value_type& val)
-		// {
-
-
-
-
-		// }
-
+		ft::pair<iterator,bool> insert (const value_type& val)
+		{
+			if (find(val.first) != end())
+			{
+				return ft::make_pair(find(val.first), false);
+			}
+			else
+			{
+				node_pointer node = _alloc.allocate(1);
+				_alloc.construct(node, Node(val, NULL, _nil, _nil, red));
+				insert_new_node(_root, node);
+				_size++;
+				return ft::make_pair(iterator(node), true);
+			}
+		}
+		iterator insert (iterator position, const value_type& val)
+		{
+			if (find(val.first) != end())
+                return find(val.first);
+			node_pointer node = _alloc.allocate(1);
+			_alloc.construct(node, Node(val, NULL, _nil, _nil, red));
+			if (_comp(*position.first, val.first))
+				insert_new_node(position._n, node);
+			else
+				insert_new_node(_root, node);
+			_size++;
+			return iterator(node);
+		}
+		template <class InputIterator>
+		void insert (InputIterator first, InputIterator last)
+		{
+			 for (; first != last; ++first)
+                insert(*first);
+		}
 		iterator find (const key_type& k)
 		{
 			node_pointer node;
@@ -156,12 +184,12 @@ namespace ft
 				bool b = _comp(node->value.first, k);
 				if (!a && !b)
 					return iterator(node);
-			if (a < 0)
-				node = node->left;
-			else
-				node = node->right;
+				if (a == true)
+					node = node->left;
+				else
+					node = node->right;
 			}
-			return iterator(_nil);
+			return end();
 		}
 		const_iterator find (const key_type& k) const
 		{
@@ -173,12 +201,12 @@ namespace ft
 				bool b = _comp(node->value.first, k);
 				if (!a && !b)
 					return const_iterator(node);
-				if (a < 0)
+				if (a == true)
 					node = node->left;
 				else
 					node = node->right;
 			}
-			return const_iterator(_nil);
+			return end();
 		}
 		void erase (iterator position)
 		{
@@ -192,16 +220,6 @@ namespace ft
 			_alloc.destroy(n);
 			_alloc.deallocate(n, 1);
 			_size--;
-		}
-		node_pointer deleteNode(node_pointer node)
-		{
-			if (node->right == _nil)
-				return node->left;
-			node_pointer x = node->right;
-			while(x && x->left)
-				x = x->left;
-			x->left = node->left;
-			return node->right;
 		}
 		size_type erase (const key_type& k)
 		{
@@ -248,7 +266,7 @@ namespace ft
 			iterator it = begin();
 			while (it != end())
 			{
-				if (!_comp(*iterator.first, k))
+				if (!_comp(*it.first, k))
 					return (it);
 				it++;
 			}
@@ -259,7 +277,7 @@ namespace ft
 			const_iterator it = begin();
 			while (it != end())
 			{
-				if (!_comp(*iterator.first, k))//k is not go before
+				if (!_comp(*it.first, k))//k is not go before
 					return (it);
 				it++;
 			}
@@ -270,7 +288,7 @@ namespace ft
 			iterator it = begin();
 			while (it != end())
 			{
-				if (_comp(*iterator.first, k))
+				if (_comp(*it.first, k))
 					return (it);
 				it++;
 			}
@@ -281,7 +299,7 @@ namespace ft
 			const_iterator it = begin();
 			while (it != end())
 			{
-				if (_comp(*iterator.first, k))
+				if (_comp(*it.first, k))
 					return (it);
 				it++;
 			}
@@ -295,18 +313,45 @@ namespace ft
 		{
 			return (ft::make_pair<iterator,iterator>(lower_bound(k), upper_bound(k)));
 		}
-		allocator_type get_allocator() const
-		{
-			return _alloc;
-		}
-
-
-
-
-
+		// allocator_type get_allocator() const
+		// {
+		// 	return _alloc;
+		// }
 
 	private:
-
+		node_pointer deleteNode(node_pointer node)
+			{
+				if (node->right == _nil)
+					return node->left;
+				node_pointer x = node->right;
+				while(x && x->left)
+					x = x->left;
+				x->left = node->left;
+				return node->right;
+			}
+		void insert_new_node(node_pointer hint, node_pointer new_node)
+		{
+			node_pointer x = hint;
+			node_pointer xParent = _nil;
+			while (x != _nil)
+			{
+				xParent = x;
+				if (_comp(new_node->value.first, x->value.first) == true)
+					x = x->left;
+				else
+					x = x->right;
+			}
+			new_node->parent = xParent;
+			if (xParent == _nil)
+				_root = new_node;
+			else
+			{
+				if (_comp(new_node->value.first, xParent->value.first) == true)
+					xParent->left = new_node;
+				else
+					xParent->right = new_node;
+			}
+		}
 
 
 	};

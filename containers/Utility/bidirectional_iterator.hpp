@@ -4,11 +4,13 @@
 #include "main.hpp"
 namespace ft
 {
-	template <typename Node_type> /*will put red-black-tree this type of node inside*/
+	template <typename Node_type>/*node type is ft::Node*/
 	class bidirectional_iterator
 	{
 		template<typename U>
 		friend class Const_Bidirectional_iterator;
+		template<class Key, class E, class Node,class Compare>
+		friend class red_black_tree;
 	public:
 		typedef size_t                          size_type;
 		typedef Node_type                       value_type;
