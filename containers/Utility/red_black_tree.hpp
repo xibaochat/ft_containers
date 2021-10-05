@@ -111,10 +111,14 @@ namespace ft
 		}
 		iterator end()
 		{
+			if (!_size)
+				return begin();
 			return iterator(_nil, _root, _nil);
 		}
 		const_iterator end() const
 		{
+			if (!_size)
+				return begin();
 			return const_iterator(_nil, _root, _nil);
 		}
 		reverse_iterator rbegin()
@@ -167,12 +171,12 @@ namespace ft
                 return find(val.first);
 			node_pointer node = _alloc.allocate(1);
 			_alloc.construct(node, Node(val, NULL, _nil, _nil, red));
-			if (_comp(*position.first, val.first))
+			if (_comp((*position).first, val.first))
 				insert_new_node(position._n, node);
 			else
 				insert_new_node(_root, node);
 			_size++;
-			return iterator(node);
+			return iterator(node, _root, _nil);
 		}
 		template <class InputIterator>
 		void insert (InputIterator first, InputIterator last)
@@ -217,12 +221,40 @@ namespace ft
 		void erase (iterator position)
 		{
 			node_pointer n = position._n;
-			if (!n->parent)
+			node_pointer tmp;
+			if (position == end())
+				return ;
+			else if (!n->parent)
+			{
 				_root = deleteNode(n);
+				_root->parent = NULL;
+				if (_root->left != _nil)
+					_root->left->parent = _root;
+				if (_root->right != _nil)
+					_root->right->parent = _root;
+			}//no child
+			else if (n && n->left == _nil
+					 && n->right == _nil)
+			{
+				if (n->parent->left == n)
+					n->parent->left = _nil;
+				else
+					n->parent->right = _nil;
+			}
 			else if (n->parent->left == n)
-				n->parent->left = deleteNode(n);
+			{
+				tmp = deleteNode(n);
+				n->parent->left = tmp;
+				tmp->parent = n->parent;
+//				n->left->parent = n->parent;
+			}
 			else
-				n->parent->right = deleteNode(n);
+			{
+				tmp = deleteNode(n);
+				n->parent->right = tmp;
+				//n->left->parent = tmp;
+				tmp->parent = n->parent;
+			}
 			_alloc.destroy(n);
 			_alloc.deallocate(n, 1);
 			_size--;
@@ -230,7 +262,7 @@ namespace ft
 		size_type erase (const key_type& k)
 		{
 			iterator it = find(k);
-			if (it == _nil)
+			if (it._n == _nil)
 				return (0);
 			else
 			{
@@ -238,10 +270,20 @@ namespace ft
 				return (1);
 			}
 		}
+
+		iterator get_next(iterator it)
+		{
+			return (++it);
+		}
+
 		void erase (iterator first, iterator last)
 		{
 			while (first != last)
-				erase(first++);
+			{
+				iterator tmp = get_next(first);
+				erase(first);
+				first = tmp;
+			}
 		}
 		void swap (_Self& x)
 		{
@@ -330,9 +372,13 @@ namespace ft
 				if (node->right == _nil)
 					return node->left;
 				node_pointer x = node->right;
-				while(x && x->left)
+				while(x && x->left != _nil)
 					x = x->left;
-				x->left = node->left;
+				if (node->left != _nil)
+				{
+					x->left = node->left;
+					node->left->parent = x;
+				}
 				return node->right;
 			}
 		void insert_new_node(node_pointer hint, node_pointer new_node)

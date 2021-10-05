@@ -65,6 +65,8 @@ namespace ft
 				while (_n->parent && _n == _n->parent->right)
 					_n = _n->parent;
 				_n = _n->parent;
+				if (!_n)
+					_n = _nil;
 			}
 			return *this;
 		}

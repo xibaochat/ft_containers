@@ -118,7 +118,7 @@ namespace ft
 		}
 		mapped_type& operator[] (const key_type& k)
 		{
-			return (*((this->insert(make_pair(k,mapped_type()))).first)).second;
+			return (*((this->insert(ft::make_pair(k,mapped_type()))).first)).second;
 		}
 		pair<iterator, bool> insert(const value_type &val)
 		{
@@ -127,7 +127,7 @@ namespace ft
 
 		iterator insert(iterator hint, const value_type &val)
 		{
-			return _tree.insert(hint, val).first;
+			return _tree.insert(hint, val);
 		}
 
 		template <typename InputIt>

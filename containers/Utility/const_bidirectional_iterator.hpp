@@ -12,6 +12,7 @@ namespace ft
 	{
 	public:
 		typedef size_t size_type;
+		typedef Node                       value_type;
 		typedef std::ptrdiff_t difference_type;
 		typedef typename Node::value_type  pair;
 		typedef const pair& reference;
@@ -73,6 +74,8 @@ namespace ft
 				while (_n->parent && _n == _n->parent->right)
 					_n = _n->parent;
 				_n = _n->parent;
+				if (!_n)
+					_n = _nil;
 			}
 			return *this;
 		}
@@ -87,7 +90,7 @@ namespace ft
 		{
 			if (_n && _n == _nil)
             {
-                _node* tmp = _root;
+                const _node* tmp = _root;
                 while (tmp && tmp->right != _nil)
                     tmp = tmp->right;
                 _n = tmp;
