@@ -5,8 +5,8 @@
 namespace ft
 {
 	//           key_type	, mapped_type,  key_compare
- 	template<class Key, class T, class Compare = std::less<Key>,
-			 class Allocator = std::allocator<ft ::pair<const Key, T> > >
+ 	template<class Key, class T, class Compare = ft::less<Key>,
+			 class Allocator = std::allocator<ft ::pair<const Key,T > > >
 	class map
 	{
 	public:
@@ -59,7 +59,7 @@ namespace ft
 		map (InputIt first, InputIt last,
 			 const key_compare& comp = key_compare(),
 			 const allocator_type& alloc = allocator_type()): _tree(first, last, comp, alloc){}
-		map (const map& x):_tree(x.tree){}
+		map (const map& x):_tree(x._tree){}
 		~map(){_tree.clear();}
 		_Self &operator=(const _Self &src)
 		{

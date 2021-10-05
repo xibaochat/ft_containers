@@ -32,6 +32,14 @@ namespace ft
         a = b;
         b = tmp;
     };
+	template<class T>
+    struct less : std::binary_function<T, T, bool>
+    {
+        bool    operator()(T const& x, T const& y) const
+		{
+			return x < y;
+		}
+    };
 
 
 }

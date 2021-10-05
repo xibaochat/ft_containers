@@ -21,13 +21,14 @@ namespace ft
 
 	template <class Key, class E,
 			  class Node = ft::Node<E>,
-			  class Compare = std::less<Key> >
+			  class Compare = ft::less<Key> >
 	class red_black_tree
 	{
 	public:
 		typedef Key                                      key_type;
 		//    ???  ---------------why?
-		typedef Node                                     value_type;
+		//typedef Node                                     value_type;
+		typedef E  value_type;
 		typedef Compare                                  key_compare;
 		typedef ft::bidirectional_iterator<Node>         iterator;
 		typedef ft::Const_Bidirectional_iterator<Node>   const_iterator;
@@ -93,24 +94,28 @@ namespace ft
 		iterator begin()
 		{
 			node_pointer t = _root;
-			while (t && t->left)
+			while (t && t->left != _nil)
+			{
 				t = t->left;
-			return iterator(t);
+			}
+			return iterator(t, _root, _nil);
 		}
 		const_iterator begin() const
 		{
 			node_pointer t = _root;
-			while (t && t->left)
+			while (t && t->left != _nil)
+			{
 				t = t->left;
-			return const_iterator(t);
+			}
+			return const_iterator(t, _root, _nil);
 		}
 		iterator end()
 		{
-			return iterator(_nil);
+			return iterator(_nil, _root, _nil);
 		}
 		const_iterator end() const
 		{
-			return const_iterator(_nil);
+			return const_iterator(_nil, _root, _nil);
 		}
 		reverse_iterator rbegin()
 		{
@@ -142,9 +147,10 @@ namespace ft
 		}
 		ft::pair<iterator,bool> insert (const value_type& val)
 		{
-			if (find(val.first) != end())
+			iterator it = find(val.first);
+			if (it != end())
 			{
-				return ft::make_pair(find(val.first), false);
+				return ft::make_pair(it, false);
 			}
 			else
 			{
@@ -152,7 +158,7 @@ namespace ft
 				_alloc.construct(node, Node(val, NULL, _nil, _nil, red));
 				insert_new_node(_root, node);
 				_size++;
-				return ft::make_pair(iterator(node), true);
+				return ft::make_pair(iterator(node, _root, _nil), true);
 			}
 		}
 		iterator insert (iterator position, const value_type& val)
@@ -183,7 +189,7 @@ namespace ft
 				bool a = _comp(k, node->value.first);
 				bool b = _comp(node->value.first, k);
 				if (!a && !b)
-					return iterator(node);
+					return iterator(node, _root, _nil);
 				if (a == true)
 					node = node->left;
 				else
@@ -200,7 +206,7 @@ namespace ft
 				bool a = _comp(k, node->value.first);
 				bool b = _comp(node->value.first, k);
 				if (!a && !b)
-					return const_iterator(node);
+					return const_iterator(node, _root, _nil);
 				if (a == true)
 					node = node->left;
 				else
@@ -347,9 +353,13 @@ namespace ft
 			else
 			{
 				if (_comp(new_node->value.first, xParent->value.first) == true)
+				{
 					xParent->left = new_node;
+				}
 				else
+				{
 					xParent->right = new_node;
+				}
 			}
 		}
 

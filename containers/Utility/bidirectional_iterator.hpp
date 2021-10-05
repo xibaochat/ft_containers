@@ -19,22 +19,28 @@ namespace ft
 		typedef pair*                           pointer;
 		typedef std::ptrdiff_t                  difference_type;
 		typedef std::bidirectional_iterator_tag iterator_category;
+		typedef Node_type                               _node;
+		_node *_n;
+		_node *_nil;
+		_node *_root;
 	private:
 		typedef bidirectional_iterator<Node_type>       _Self;
-		typedef Node_type                               _node;
 
-		_node *_n;
+
+
 	public:
 		/*******************************************
 		 *****           Construct              *****
 		 *******************************************/
-		bidirectional_iterator():_n(NULL){}
-		bidirectional_iterator(_node *n):_n(n){}
-		bidirectional_iterator(const _Self &obj):_n(obj._n){}
+		bidirectional_iterator():_n(NULL), _nil(NULL), _root(NULL){}
+		bidirectional_iterator(_node *n, _node *root, _node* nil):_n(n), _root(root), _nil(nil){}
+		bidirectional_iterator(const _Self &obj):_n(obj._n), _root(obj._root), _nil(obj._nil){}
 		~bidirectional_iterator(){}
 		_Self &operator=(const _Self &src)
 		{
 			_n = src._n;
+			_root = src._root;
+			_nil = src._nil;
 			return *this;
 		}
 		/*******************************************
@@ -48,10 +54,10 @@ namespace ft
 		 *******************************************/
 		_Self& operator++()
 		{
-			if (_n->right)
+			if (_n->right && _n->right != _nil)
 			{
 				_n = _n->right;
-				while (_n->left)
+				while (_n->left && _n->left != _nil)
 					_n = _n->left;
 			}
 			else
@@ -71,10 +77,17 @@ namespace ft
 
 		_Self& operator--()
 		{
-			if (_n->left)
+			if (_n && _n == _nil)
+			{
+				_node* tmp = _root;
+				while (tmp && tmp->right != _nil)
+					tmp = tmp->right;
+				_n = tmp;
+			}
+			else if (_n->left && _n->left != _nil)
 			{
 				_n = _n->left;
-				while (_n->right)
+				while (_n->right && _n->right != _nil)
 					_n = _n->right;
 			}
 			else

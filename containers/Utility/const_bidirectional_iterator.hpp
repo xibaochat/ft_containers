@@ -13,31 +13,42 @@ namespace ft
 	public:
 		typedef size_t size_type;
 		typedef std::ptrdiff_t difference_type;
-		typedef typename Node::value  pair;
+		typedef typename Node::value_type  pair;
 		typedef const pair& reference;
 		typedef pair* pointer;
 		typedef std::bidirectional_iterator_tag iterator_category;
-	private:
-		typedef Const_Bidirectional_iterator<Node> _Self;
 		typedef Node _node;
 		const _node*       _n;
+		const _node*       _nil;
+		const _node*       _root;
+	private:
+		typedef Const_Bidirectional_iterator<Node> _Self;
+
+
 	public:
-		Const_Bidirectional_iterator():_n(NULL){}
-		Const_Bidirectional_iterator(const _node* ptr):_n(ptr){}/*node is const*/
-		Const_Bidirectional_iterator(const _Self &obj):_n(obj._n){}
+		Const_Bidirectional_iterator():_n(NULL), _nil(NULL){}
+		Const_Bidirectional_iterator(const _node* ptr, const _node* root, const _node* sentinel):_n(ptr), _root(root), _nil(sentinel){
+}/*node is const*/
+		Const_Bidirectional_iterator(const _Self &obj):_n(obj._n), _root(obj._root), _nil(obj._nil){}
 		Const_Bidirectional_iterator(bidirectional_iterator<Node> obj)
 		{
 			_n = obj._n;
+			_nil = obj._nil;
+			_root = obj._root;
 		}
 		~Const_Bidirectional_iterator(){}
 		_Self &operator=(const _Self &src)
 		{
 			_n = src._n;
+			_nil = src._nil;
+			 _root = src._root;
 			return *this;
 		}
 		_Self &operator=(bidirectional_iterator<Node> obj)
 		{
 			_n = obj._n;
+			_nil = obj._nil;
+			_root = obj._root;
 			return *this;
 		}
 
@@ -49,11 +60,13 @@ namespace ft
 
 		_Self& operator++()
 		{
-			if (_n->right)
+			if (_n->right && _n->right != _nil)
 			{
 				_n = _n->right;
-				while (_n->left)
+				while (_n->left && _n->left != _nil)
+				{
 					_n = _n->left;
+				}
 			}
 			else
 			{
@@ -72,10 +85,17 @@ namespace ft
 
 		_Self& operator--()
 		{
-			if (_n->left)
+			if (_n && _n == _nil)
+            {
+                _node* tmp = _root;
+                while (tmp && tmp->right != _nil)
+                    tmp = tmp->right;
+                _n = tmp;
+            }
+			else if (_n->left && _n->left != _nil)
 			{
 				_n = _n->left;
-				while (_n->right)
+				while (_n->right && _n->right != _nil)
 					_n = _n->right;
 			}
 			else
