@@ -7,14 +7,17 @@ namespace ft
 	struct pair
 	{
 	public:
-	typedef T1 first_type;
-		typedef T2 second_type;
-		T1 first;
-		T2 second;
+		typedef  T1 first_type;
+		typedef  T2 second_type;
+		first_type first;
+		second_type second;
 		pair():first(first_type()), second(second_type()){}
 		template<class U, class V>
 		pair (const pair<U,V>& pr):first(pr.first), second(pr.second){}
 		pair (const first_type& a, const second_type& b):first(a), second(b){}
+
+		pair (first_type& a, second_type& b):first(a), second(b){}
+
 		~pair(){}
 		pair& operator= (const pair& pr)
 			{
@@ -22,6 +25,8 @@ namespace ft
 				second = pr.second;
 				return (*this);
 			}//https://www.cplusplus.com/reference/utility/pair/operator=/
+
+
 	};
 
 /*non member overload*/

@@ -52,7 +52,9 @@ namespace ft
 
 		value_compare value_comp() const
 		{
-			return value_comp(Compare());
+			ft::less<Key> obj;
+			value_compare c(obj);
+			return c;
 		}
 		map (const key_compare& comp = key_compare(),const allocator_type& alloc = allocator_type()):_tree(comp, alloc){}
 		template <class InputIt>
@@ -60,7 +62,7 @@ namespace ft
 			 const key_compare& comp = key_compare(),
 			 const allocator_type& alloc = allocator_type()): _tree(first, last, comp, alloc){}
 		map (const map& x):_tree(x._tree){}
-		~map(){_tree.clear();}
+		~map(){}//{_tree.clear();}
 		_Self &operator=(const _Self &src)
 		{
 			this->_tree = src._tree;

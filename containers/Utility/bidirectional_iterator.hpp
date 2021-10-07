@@ -33,8 +33,8 @@ namespace ft
 		 *****           Construct              *****
 		 *******************************************/
 		bidirectional_iterator():_n(NULL), _nil(NULL), _root(NULL){}
-		bidirectional_iterator(_node *n, _node *root, _node* nil):_n(n), _root(root), _nil(nil){}
-		bidirectional_iterator(const _Self &obj):_n(obj._n), _root(obj._root), _nil(obj._nil){}
+		bidirectional_iterator(_node *n, _node *root, _node* nil):_n(n), _nil(nil), _root(root){}
+		bidirectional_iterator(const _Self &obj):_n(obj._n), _nil(obj._nil), _root(obj._root){}
 		~bidirectional_iterator(){}
 		_Self &operator=(const _Self &src)
 		{
@@ -47,7 +47,11 @@ namespace ft
 		 *****          dereferenced           *****
 		 *******************************************/
 		reference operator*() const{return this->_n->value;}
-		pointer operator->() {return &_n->value;}
+		pointer operator->() const {return &(this->_n->value);}
+
+//		const pair& operator*() const{return this->_n->value;}
+//		const pointer operator->() const {return &(this->_n->value);}
+
 		/*******************************************
 		 *****       Operator Arithmetics       *****
 		 *****             ++ | --              *****

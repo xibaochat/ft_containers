@@ -9,13 +9,14 @@ namespace ft
 	template <typename T> // T is pair
 	struct Node
 	{
+//		typedef const T   value_type;
 		typedef T   value_type;
 		T value;
 		Node* parent;
 		Node* left;
 		Node* right;
 		Color color;
-		Node(const T &p, Node* parent_, Node* left_, Node* right_, enum Color color):
+		Node( const T &p, Node* parent_, Node* left_, Node* right_, enum Color color):
 			value(p), parent(parent_), left(left_), right(right_), color(color){}
 	};
 
@@ -94,7 +95,7 @@ namespace ft
 		iterator begin()
 		{
 			node_pointer t = _root;
-			while (t && t->left != _nil)
+			while (t && t->left && t->left != _nil)
 			{
 				t = t->left;
 			}
@@ -103,7 +104,7 @@ namespace ft
 		const_iterator begin() const
 		{
 			node_pointer t = _root;
-			while (t && t->left != _nil)
+			while (t && t->left && t->left != _nil)
 			{
 				t = t->left;
 			}
@@ -223,10 +224,19 @@ namespace ft
 			node_pointer n = position._n;
 			node_pointer tmp;
 			if (position == end())
+			{
 				return ;
+			}
 			else if (!n->parent)
 			{
 				_root = deleteNode(n);
+				if (_root == _nil)
+				{
+					_alloc.destroy(n);
+					_alloc.deallocate(n, 1);
+					_size--;
+					return ;
+				}
 				_root->parent = NULL;
 				if (_root->left != _nil)
 					_root->left->parent = _root;
@@ -293,15 +303,22 @@ namespace ft
 		}
 		void clear()
 		{
-			deleteTree(_root);
+			_size = 0;
+			if (_nil && _nil != _root)
+				deleteTree(_root);
+			_nil->parent = NULL;
+			_nil->left = NULL;
+			_nil->right = NULL;
 			_root = _nil;
 		}
 		void deleteTree(node_pointer node)
 		{
 			if (node == _nil)
 				return ;
-			deleteTree(node->left);
-			deleteTree(node->right);
+			if (node->left)
+				deleteTree(node->left);
+			if (node->right)
+				deleteTree(node->right);
 			_alloc.destroy(node);
 			_alloc.deallocate(node, 1);
 		}
@@ -314,7 +331,7 @@ namespace ft
 			iterator it = begin();
 			while (it != end())
 			{
-				if (!_comp(*it.first, k))
+				if (!_comp((*it).first, k))
 					return (it);
 				it++;
 			}
@@ -325,7 +342,7 @@ namespace ft
 			const_iterator it = begin();
 			while (it != end())
 			{
-				if (!_comp(*it.first, k))//k is not go before
+				if (!_comp((*it).first, k))//k is not go before
 					return (it);
 				it++;
 			}
@@ -336,7 +353,7 @@ namespace ft
 			iterator it = begin();
 			while (it != end())
 			{
-				if (_comp(*it.first, k))
+				if (_comp(k, (*it).first))
 					return (it);
 				it++;
 			}
@@ -347,7 +364,7 @@ namespace ft
 			const_iterator it = begin();
 			while (it != end())
 			{
-				if (_comp(*it.first, k))
+				if (_comp(k, (*it).first))
 					return (it);
 				it++;
 			}
@@ -395,7 +412,10 @@ namespace ft
 			}
 			new_node->parent = xParent;
 			if (xParent == _nil)
+			{
 				_root = new_node;
+				_root->parent = NULL;
+			}
 			else
 			{
 				if (_comp(new_node->value.first, xParent->value.first) == true)
