@@ -6,6 +6,10 @@
 # include <iostream>
 # include <string>
 # include <fstream>
+# include <map>
+# include "../containers/vector.hpp"
+# include "../containers/map.hpp"
+
 
 
 void iterator_test();
@@ -16,7 +20,9 @@ void reverse_iterator_arithmetics();
 void stl_reverse_iterator_arithmetics();
 void reverse_iterator_bool_test();
 void stl_reverse_iterator_bool_test();
-
 void test_vector_construct();
+void test_map();
+void test_vector();
+
 
 #endif

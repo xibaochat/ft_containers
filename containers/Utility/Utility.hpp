@@ -9,6 +9,7 @@
 #define BLUE        "\033[1;34m"
 #define CYAN        "\e[96m"
 #define ORANGE      "\e[38;5;215m"
+#define UNDERLINE "\033[4m"
 #define NC          "\033[0m"
 
 namespace ft

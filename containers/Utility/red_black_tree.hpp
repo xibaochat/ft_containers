@@ -172,7 +172,9 @@ namespace ft
                 return find(val.first);
 			node_pointer node = _alloc.allocate(1);
 			_alloc.construct(node, Node(val, NULL, _nil, _nil, red));
-			if (_comp((*position).first, val.first))
+//			if (_comp((*position).first, val.first))
+//				insert_new_node(position._n, node);
+			if (_comp((*position).first, val.first) == 0)
 				insert_new_node(position._n, node);
 			else
 				insert_new_node(_root, node);
@@ -402,6 +404,7 @@ namespace ft
 		{
 			node_pointer x = hint;
 			node_pointer xParent = _nil;
+
 			while (x != _nil)
 			{
 				xParent = x;
@@ -419,13 +422,9 @@ namespace ft
 			else
 			{
 				if (_comp(new_node->value.first, xParent->value.first) == true)
-				{
 					xParent->left = new_node;
-				}
 				else
-				{
 					xParent->right = new_node;
-				}
 			}
 		}
 
