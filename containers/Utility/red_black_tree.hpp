@@ -33,6 +33,12 @@ namespace ft
 				return (grandparent()->left);
 			return (grandparent()->right);
 		}
+		Node* sibling()
+		{
+            if(parent->left == this)
+                return parent->right;
+			return parent->left;
+        }
 	};
 
 	template <class Key, class E,
@@ -240,6 +246,7 @@ namespace ft
 		{
 			node_pointer n = position._n;
 			node_pointer tmp;
+
 			if (position == end())
 			{
 				return ;
@@ -247,18 +254,12 @@ namespace ft
 			else if (!n->parent)
 			{
 				_root = deleteNode(n);
-				if (_root == _nil)
-				{
-					_alloc.destroy(n);
-					_alloc.deallocate(n, 1);
-					_size--;
-					return ;
-				}
 				_root->parent = NULL;
-				if (_root->left != _nil)
-					_root->left->parent = _root;
-				if (_root->right != _nil)
-					_root->right->parent = _root;
+				_root->color = black;
+				_alloc.destroy(n);
+				_alloc.deallocate(n, 1);
+				_size--;
+				return ;
 			}//no child
 			else if (n && n->left == _nil
 					 && n->right == _nil)
@@ -267,21 +268,34 @@ namespace ft
 					n->parent->left = _nil;
 				else
 					n->parent->right = _nil;
+				_alloc.destroy(n);
+				_alloc.deallocate(n, 1);
+				_size--;
+				return ;
 			}
 			else if (n->parent->left == n)
 			{
 				tmp = deleteNode(n);
 				n->parent->left = tmp;
 				tmp->parent = n->parent;
-//				n->left->parent = n->parent;
 			}
 			else
 			{
 				tmp = deleteNode(n);
 				n->parent->right = tmp;
-				//n->left->parent = tmp;
 				tmp->parent = n->parent;
 			}
+			//add balanced part
+			if (n->color == black)
+			{
+				if (tmp->color == red)
+					tmp->color = black;
+				else
+				{
+					delete_case(tmp);
+				}
+			}
+			//till ici
 			_alloc.destroy(n);
 			_alloc.deallocate(n, 1);
 			_size--;
@@ -443,19 +457,6 @@ namespace ft
 		}
 		void rotate_left(node_pointer n)
 		{
-			/*			node_pointer y = x->right;
-			x->right = y->left;
-			if (y->left && y->left != _nil)
-				y->left->parent = x;
-			y->parent = x->parent;
-			if (x->parent == NULL)
-				_root = y;
-			else if (x == x->parent->left)
-				x->parent->left = y;
-			else
-				x->parent->right = y;
-			y->left = x;
-			x->parent = y;*/
 			if (n->parent == NULL)
 			{
 				_root = n;
@@ -500,12 +501,6 @@ namespace ft
 				else
 					grandparent->right = n;
 			}
-		}
-
-		void recolor(node_pointer p)
-		{
-			if (p && p != _root && p != _nil)
-				p->color = p->color == red ? black : red;
 		}
 
 		void rb_insert_fixup(node_pointer p)
@@ -557,9 +552,79 @@ namespace ft
 				}
 			}
 		}
+		void delete_case(node_pointer tmp)
+		{
+//			std::cout << tmp->sibling()->left->color << "\n";
+//			std::cout << tmp->sibling()->right->color << " \n";
+			if (tmp->parent == NULL)
+			{
+				tmp->color = black;
+				return;
+			}
+			if (tmp->sibling()->color == red)
+			{
+				tmp->parent->color = red;
+				tmp->sibling()->color = black;
+				if (tmp == tmp->parent->left)
+					rotate_left(tmp->parent);
+				else
+					rotate_right(tmp->parent);
+			}
+			if(tmp->parent->color == black
+			   && tmp->sibling()->color == black
+               && tmp->sibling()->left->color == black
+			   && tmp->sibling()->right->color == black)
+			{
+				tmp->sibling()->color = red;
+				delete_case(tmp->parent);
+			}
+			else if(tmp->parent->color == red
+					&& tmp->sibling()->color == black
+					&& tmp->sibling()->left->color == black
+					&& tmp->sibling()->right->color == black)
+			{
+				tmp->sibling()->color = red;
+				tmp->parent->color = black;
+			}
+			else
+			{
+				if(tmp->sibling()->color == black)
+				{
+					if(tmp == tmp->parent->left
+					   && tmp->sibling()->left->color == red
+					   && tmp->sibling()->right->color == black)
+					{
+						tmp->sibling()->color = red;
+						tmp->sibling()->left->color = black;
+						rotate_right(tmp->sibling()->left);
+					}
+					else if(tmp == tmp->parent->right
+							&& tmp->sibling()->left->color == black
+							&& tmp->sibling()->right->color == red)
+					{
+						tmp->sibling()->color = red;
+						tmp->sibling()->right->color = black;
+						rotate_left(tmp->sibling()->right);
+					}
+				}
+				tmp->sibling()->color = tmp->parent->color;
+				tmp->parent->color = black;
+				if(tmp == tmp->parent->left)
+				{
+					tmp->sibling()->right->color = black;
+					rotate_left(tmp->sibling());
+				}
+				else
+				{
+					tmp->sibling()->left->color = black;
+					rotate_right(tmp->sibling());
+				}
+			}
+		}
 	};
 
 }
 
 #endif
 //https://www.tutorialspoint.com/delete-node-in-a-bst-in-cplusplus
+//https://zh.wikipedia.org/wiki/%E7%BA%A2%E9%BB%91%E6%A0%91
