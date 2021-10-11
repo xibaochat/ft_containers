@@ -2,7 +2,7 @@
 
 int main()
 {
-	test_vector();
+//	test_vector();
 	test_map();
 	return (0);
 }

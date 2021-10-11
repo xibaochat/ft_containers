@@ -18,6 +18,21 @@ namespace ft
 		Color color;
 		Node( const T &p, Node* parent_, Node* left_, Node* right_, enum Color color):
 			value(p), parent(parent_), left(left_), right(right_), color(color){}
+		Node* grandparent()
+		{
+			if (parent == NULL)
+				return (NULL);
+			return parent->parent;
+		}
+		Node* uncle()
+		{
+			if (grandparent() == NULL)
+				return (NULL);
+
+			if (parent == grandparent()->right)
+				return (grandparent()->left);
+			return (grandparent()->right);
+		}
 	};
 
 	template <class Key, class E,
@@ -380,10 +395,7 @@ namespace ft
 		{
 			return (ft::make_pair<iterator,iterator>(lower_bound(k), upper_bound(k)));
 		}
-		// allocator_type get_allocator() const
-		// {
-		// 	return _alloc;
-		// }
+
 
 	private:
 		node_pointer deleteNode(node_pointer node)
@@ -418,6 +430,7 @@ namespace ft
 			{
 				_root = new_node;
 				_root->parent = NULL;
+				_root->color = black;
 			}
 			else
 			{
@@ -426,9 +439,124 @@ namespace ft
 				else
 					xParent->right = new_node;
 			}
+			rb_insert_fixup(new_node);
+		}
+		void rotate_left(node_pointer n)
+		{
+			/*			node_pointer y = x->right;
+			x->right = y->left;
+			if (y->left && y->left != _nil)
+				y->left->parent = x;
+			y->parent = x->parent;
+			if (x->parent == NULL)
+				_root = y;
+			else if (x == x->parent->left)
+				x->parent->left = y;
+			else
+				x->parent->right = y;
+			y->left = x;
+			x->parent = y;*/
+			if (n->parent == NULL)
+			{
+				_root = n;
+				return ;
+			}
+			node_pointer grandparent = n->grandparent();
+			node_pointer parent = n->parent;
+			node_pointer y = n->left;
+			parent->right = y;
+			if (y != _nil)
+				y->parent = parent;
+			n->left = parent;
+			parent->parent = n;
+			if (_root == parent)
+				_root = n;
+			n->parent = grandparent;
+			if (grandparent != NULL)
+			{
+				if (grandparent->left == parent)
+					grandparent->left = n;
+				else
+					grandparent->right = n;
+			}
+		}
+		void rotate_right(node_pointer n)
+		{
+			node_pointer grandparent = n->grandparent();
+			node_pointer parent = n->parent;
+			node_pointer y = n->right;
+			parent->left = y;
+			if (y != _nil)
+				y->parent = parent;
+			n->right = parent;
+			parent->parent = n;
+			if (_root == parent)
+				_root = n;
+			n->parent = grandparent;
+			if (grandparent != NULL)
+			{
+				if (grandparent->left == parent)
+					grandparent->left = n;
+				else
+					grandparent->right = n;
+			}
 		}
 
+		void recolor(node_pointer p)
+		{
+			if (p && p != _root && p != _nil)
+				p->color = p->color == red ? black : red;
+		}
 
+		void rb_insert_fixup(node_pointer p)
+		{
+			//if p is node, just modify color
+			if (p->parent == NULL)
+			{
+				_root = p;
+				p->color = black;
+				return ;
+			}
+			if (p->parent->color == red)//if father and unclue both are red, change them + grandpa
+			{
+				if (p->uncle()->color == red)
+				{
+					p->parent->color = black;
+					p->uncle()->color = black;
+					p->grandparent()->color = red;
+					rb_insert_fixup(p->grandparent());
+				}
+				else //if parent is red, uncle is black, there are 2 form
+				{
+					if (p->parent->right == p && p->grandparent()->left == p->parent)
+					{
+						rotate_left(p);
+						p->color = black;
+						p->parent->color = red;
+						rotate_right(p);
+					}
+					else if (p->parent->left == p && p->grandparent()->right == p->parent)
+					{
+						rotate_right(p);
+						p->color = black;
+						p->parent->color = red;
+						rotate_left(p);
+					}
+					else if (p->parent->left == p && p->grandparent()->left == p->parent)
+					{
+						p->parent->color = black;
+						p->grandparent()->color = red;
+						rotate_right(p->parent);
+					}
+					else if (p->parent->right == p && p->grandparent()->right == p->parent)
+					{
+						p->parent->color = black;
+						p->grandparent()->color = red;
+						rotate_left(p->parent);
+					}
+				}
+			}
+		}
 	};
 
 }
