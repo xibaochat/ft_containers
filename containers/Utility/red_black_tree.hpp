@@ -290,6 +290,8 @@ namespace ft
 			{
 				if (tmp->color == red)
 					tmp->color = black;
+				else if (n->right == _nil)
+					delete_case(n);
 				else
 				{
 					delete_case(tmp);
@@ -554,8 +556,6 @@ namespace ft
 		}
 		void delete_case(node_pointer tmp)
 		{
-//			std::cout << tmp->sibling()->left->color << "\n";
-//			std::cout << tmp->sibling()->right->color << " \n";
 			if (tmp->parent == NULL)
 			{
 				tmp->color = black;
