@@ -8,6 +8,8 @@ namespace ft
 	template <typename Node>
 	class bidirectional_iterator;
 	template <typename Node>
+	class set_it;
+	template <typename Node>
 	class Const_Bidirectional_iterator
 	{
 	public:
@@ -37,6 +39,22 @@ namespace ft
 			_nil = obj._nil;
 			_root = obj._root;
 		}
+
+		// here is for set because The value of the elements in a set cannot be modified once in the container
+		Const_Bidirectional_iterator(set_it<Node> obj)
+		{
+			_n = obj._n;
+			_nil = obj._nil;
+			_root = obj._root;
+		}
+
+		_Self &operator=(set_it<Node> obj)
+		{
+			_n = obj._n;
+			_nil = obj._nil;
+			_root = obj._root;
+			return *this;
+		}
 		~Const_Bidirectional_iterator(){}
 		_Self &operator=(const _Self &src)
 		{
@@ -61,7 +79,6 @@ namespace ft
 
 		friend bool operator==(const _Self& a, const _Self& b){return (a._n == b._n);}
 		friend bool operator!=(const _Self& a, const _Self& b){return !(a._n == b._n);}
-
 		_Self& operator++()
 		{
 			if (_n->right && _n->right != _nil)

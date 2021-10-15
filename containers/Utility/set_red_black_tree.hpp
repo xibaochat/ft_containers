@@ -1,57 +1,20 @@
-#ifndef RED_BLACK_TREE_HPP
-# define RED_BLACK_TREE_HPP
+#ifndef SET_RED_BLACK_TREE_HPP
+# define SET_RED_BLACK_TREE_HPP
 
 #include "main.hpp"
 
 namespace ft
 {
-	enum Color { red, black };
-	template <typename T> // T is pair
-	struct Node
-	{
-		typedef T   value_type;
-		T value;
-		Node* parent;
-		Node* left;
-		Node* right;
-		Color color;
-		Node( const T &p, Node* parent_, Node* left_, Node* right_, enum Color color):
-			value(p), parent(parent_), left(left_), right(right_), color(color){}
-		Node* grandparent()
-		{
-			if (parent == NULL)
-				return (NULL);
-			return parent->parent;
-		}
-		Node* uncle()
-		{
-			if (grandparent() == NULL)
-				return (NULL);
-
-			if (parent == grandparent()->right)
-				return (grandparent()->left);
-			return (grandparent()->right);
-		}
-		Node* sibling()
-		{
-            if(parent->left == this)
-                return parent->right;
-			return parent->left;
-        }
-	};
-
-	template <class Key, class E,
-			  class Node = ft::Node<E>,
+	template <class Key,
+			  class Node = ft::Node<Key>,
 			  class Compare = ft::less<Key> >
-	class red_black_tree
+	class set_red_black_tree
 	{
 	public:
 		typedef Key                                      key_type;
-		//    ???  ---------------why?
-		//typedef Node                                     value_type;
-		typedef E  value_type;
+		typedef key_type  value_type;
 		typedef Compare                                  key_compare;
-		typedef ft::bidirectional_iterator<Node>         iterator;
+		typedef ft::set_it<Node>         iterator;
 		typedef ft::Const_Bidirectional_iterator<Node>   const_iterator;
 		typedef ft::reverse_iterator<iterator>           reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>     const_reverse_iterator;
@@ -67,37 +30,37 @@ namespace ft
 		size_type                         _size;
 		key_compare                       _comp;
 		allocator_type                    _alloc;
-		typedef red_black_tree<Key, E, Node, Compare>    _Self;
+		typedef set_red_black_tree<Key, Node, Compare>    _Self;
 	public:
 		/***************** CONSTRUCTOR && DESTRUCTOR ******************/
 		/*                                                            */
 		/**************************************************************/
-		explicit red_black_tree (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()):_root(NULL), _nil(NULL), _size(0), _comp(comp), _alloc(alloc)
+		explicit set_red_black_tree (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()):_root(NULL), _nil(NULL), _size(0), _comp(comp), _alloc(alloc)
 		{
 			_root = _alloc.allocate(1);
-			_alloc.construct(_root, Node(E(), NULL, NULL, NULL, black));
+			_alloc.construct(_root, Node(value_type(), NULL, NULL, NULL, black));
 			_nil = _root;
 		}
 		template <class InputIterator>
-		red_black_tree (InputIterator first, InputIterator last,
+		set_red_black_tree (InputIterator first, InputIterator last,
 						const key_compare& comp = key_compare(),
 						const allocator_type& alloc = allocator_type())
 			:_root(NULL), _nil(NULL), _size(0), _comp(comp), _alloc(alloc)
 			{
 				_root = _alloc.allocate(1);
-				_alloc.construct(_root, Node(E(), NULL, NULL, NULL, black));
+				_alloc.construct(_root, Node(value_type(), NULL, NULL, NULL, black));
 				_nil = _root;
 				insert(first, last);
 			}
 
-		red_black_tree (const red_black_tree& x):_root(NULL), _nil(NULL), _size(0), _comp(x._comp),_alloc(x._alloc)
+		set_red_black_tree (const set_red_black_tree& x):_root(NULL), _nil(NULL), _size(0), _comp(x._comp),_alloc(x._alloc)
 			{
 				_root = _alloc.allocate(1);
-				_alloc.construct(_root, Node(E(), NULL, NULL, NULL, black));
+				_alloc.construct(_root, Node(value_type(), NULL, NULL, NULL, black));
 				_nil = _root;
 				insert(x.begin(), x.end());
 			}
-		~red_black_tree()
+		~set_red_black_tree()
 		{
 			clear();
 			_alloc.destroy(_nil);
@@ -172,7 +135,7 @@ namespace ft
 		}
 		ft::pair<iterator,bool> insert (const value_type& val)
 		{
-			iterator it = find(val.first);
+			iterator it = find(val);
 			if (it != end())
 			{
 				return ft::make_pair(it, false);
@@ -188,11 +151,11 @@ namespace ft
 		}
 		iterator insert (iterator position, const value_type& val)
 		{
-			if (find(val.first) != end())
-                return find(val.first);
+			if (find(val) != end())
+                return find(val);
 			node_pointer node = _alloc.allocate(1);
 			_alloc.construct(node, Node(val, NULL, _nil, _nil, red));
-			if (_comp((*position).first, val.first) == 0)
+			if (_comp(*position, val) == 0)
 				insert_new_node(position._n, node);
 			else
 				insert_new_node(_root, node);
@@ -205,14 +168,14 @@ namespace ft
 			 for (; first != last; ++first)
                 insert(*first);
 		}
-		iterator find (const key_type& k)
+		iterator find (const value_type& val)
 		{
 			node_pointer node;
 			node = _root;
 			while (node && node != _nil)
 			{
-				bool a = _comp(k, node->value.first);
-				bool b = _comp(node->value.first, k);
+				bool a = _comp(val, node->value);
+				bool b = _comp(node->value, val);
 				if (!a && !b)
 					return iterator(node, _root, _nil);
 				if (a == true)
@@ -222,14 +185,14 @@ namespace ft
 			}
 			return end();
 		}
-		const_iterator find (const key_type& k) const
+		const_iterator find (const value_type& k) const
 		{
 			node_pointer node;
 			node = _root;
 			while (node && node != _nil)
 			{
-				bool a = _comp(k, node->value.first);
-				bool b = _comp(node->value.first, k);
+				bool a = _comp(k, node->value);
+				bool b = _comp(node->value, k);
 				if (!a && !b)
 					return const_iterator(node, _root, _nil);
 				if (a == true)
@@ -299,7 +262,7 @@ namespace ft
 			_alloc.deallocate(n, 1);
 			_size--;
 		}
-		size_type erase (const key_type& k)
+		size_type erase (const value_type& k)
 		{
 			iterator it = find(k);
 			if (it._n == _nil)
@@ -352,49 +315,49 @@ namespace ft
 			_alloc.destroy(node);
 			_alloc.deallocate(node, 1);
 		}
-		size_type count (const key_type& k) const
+		size_type count (const value_type& k) const
 		{
 			return (find(k) != end());
 		}
-		iterator lower_bound (const key_type& k)
+		iterator lower_bound (const value_type& k)
 		{
 			iterator it = begin();
 			while (it != end())
 			{
-				if (!_comp((*it).first, k))
+				if (!_comp(*it, k))
 					return (it);
 				it++;
 			}
 			return (end());
 		}
-		const_iterator lower_bound (const key_type& k) const
+		const_iterator lower_bound (const value_type& k) const
 		{
 			const_iterator it = begin();
 			while (it != end())
 			{
-				if (!_comp((*it).first, k))//k is not go before
+				if (!_comp(*it, k))//k is not go before
 					return (it);
 				it++;
 			}
 			return (end());
 		}
-		iterator upper_bound (const key_type& k)
+		iterator upper_bound (const value_type& k)
 		{
 			iterator it = begin();
 			while (it != end())
 			{
-				if (_comp(k, (*it).first))
+				if (_comp(k, *it))
 					return (it);
 				it++;
 			}
 			return (end());
 		}
-		const_iterator upper_bound (const key_type& k) const
+		const_iterator upper_bound (const value_type& k) const
 		{
 			const_iterator it = begin();
 			while (it != end())
 			{
-				if (_comp(k, (*it).first))
+				if (_comp(k, *it))
 					return (it);
 				it++;
 			}
@@ -404,10 +367,10 @@ namespace ft
 		{
 			return (ft::make_pair<const_iterator,const_iterator>(lower_bound(k), upper_bound(k)));
 		}
-		ft::pair<iterator,iterator> equal_range (const key_type& k)
-		{
-			return (ft::make_pair<iterator,iterator>(lower_bound(k), upper_bound(k)));
-		}
+		ft::pair<iterator, iterator> equal_range (const key_type& k)
+			{
+				return (ft::make_pair<iterator,iterator>(lower_bound(k), upper_bound(k)));
+			}
 
 
 	private:
@@ -433,7 +396,7 @@ namespace ft
 			while (x != _nil)
 			{
 				xParent = x;
-				if (_comp(new_node->value.first, x->value.first) == true)
+				if (_comp(new_node->value, x->value) == true)
 					x = x->left;
 				else
 					x = x->right;
@@ -447,7 +410,7 @@ namespace ft
 			}
 			else
 			{
-				if (_comp(new_node->value.first, xParent->value.first) == true)
+				if (_comp(new_node->value, xParent->value) == true)
 					xParent->left = new_node;
 				else
 					xParent->right = new_node;

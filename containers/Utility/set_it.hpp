@@ -1,13 +1,12 @@
-#ifndef BIDIRECTIONAL_ITERATOR_HPP
-# define BIDIRECTIONAL_ITERATOR_HPP
+#ifndef SET_IT_HPP
+# define SET_IT_HPP
 
 #include "main.hpp"
 namespace ft
 {
 	template <typename Node_type>/*node type is ft::Node*/
-	class bidirectional_iterator
+	class set_it
 	{
-
 		template<typename U>
 		friend class Const_Bidirectional_iterator;
 		template<class Key, class E, class Node,class Compare>
@@ -16,37 +15,38 @@ namespace ft
 		typedef size_t                          size_type;
 		typedef Node_type                       value_type;
 		typedef typename Node_type::value_type  pair;
-		typedef pair&                           reference;
-		typedef pair*                           pointer;
+		typedef const pair&                           reference;
+		typedef const pair*                           pointer;
 		typedef std::ptrdiff_t                  difference_type;
 		typedef std::bidirectional_iterator_tag iterator_category;
 		typedef Node_type                               _node;
 		_node *_n;
 		_node *_nil;
 		_node *_root;
-		typedef pair const*                        const_pointer;
 	private:
-		typedef bidirectional_iterator<Node_type>       _Self;
-
-
-
+		typedef set_it<Node_type>       _Self;
 	public:
 		/*******************************************
 		 *****           Construct              *****
 		 *******************************************/
 
-		bidirectional_iterator():_n(NULL), _nil(NULL), _root(NULL){}
-		bidirectional_iterator(_node *n, _node *root, _node* nil):_n(n), _nil(nil), _root(root){}
-		bidirectional_iterator(const _Self &obj):_n(obj._n), _nil(obj._nil), _root(obj._root){}
-
-		~bidirectional_iterator(){}
+		set_it():_n(NULL), _nil(NULL), _root(NULL){}
+		set_it(_node *n, _node *root, _node* nil):_n(n), _nil(nil), _root(root){}
+		set_it(const _Self &obj):_n(obj._n), _nil(obj._nil), _root(obj._root){}
+		~set_it(){}
 		_Self &operator=(const _Self &src)
 		{
 			_n = src._n;
-			_root = src._root;
 			_nil = src._nil;
+			_root = src._root;
 			return *this;
 		}
+		// set_it (Const_Bidirectional_iterator<Node_type> src)
+		// {
+		// 	_n = src._n;
+		// 	_nil = src._nil;
+		// 	_root = src._root;
+		// }
 		/*******************************************
 		 *****          dereferenced           *****
 		 *******************************************/
@@ -117,8 +117,21 @@ namespace ft
 		 *****         Operator Boolean         *****
 		 *****            == | !=               *****
 		 *******************************************/
-		friend bool operator==(const _Self& a, const _Self& b){return (a._n == b._n);}
-		friend bool operator!=(const _Self& a, const _Self& b){return !(a._n == b._n);}
+//		friend bool operator==(const _Self& a, const _Self& b){return (a._n == b._n);}
+//		friend bool operator!=(const _Self& a, const _Self& b){return !(a._n == b._n);}
+
+		bool
+        operator==(_Self const& rhs) const
+        {
+            return _n == rhs._n;
+        }
+
+        bool
+        operator!=(_Self const& rhs) const
+			{
+            return _n != rhs._n;
+			}
+
 
 	};
 }

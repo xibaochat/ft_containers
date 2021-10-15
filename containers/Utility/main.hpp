@@ -28,4 +28,6 @@
 # include "const_bidirectional_iterator.hpp"
 # include "pair.hpp"
 # include "red_black_tree.hpp"
+# include "set_red_black_tree.hpp"
+# include "set_it.hpp"
 #endif
