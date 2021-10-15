@@ -14,8 +14,9 @@ namespace ft
 		typedef Key                                      key_type;
 		typedef key_type  value_type;
 		typedef Compare                                  key_compare;
-		typedef ft::set_it<Node>         iterator;
-		typedef ft::Const_Bidirectional_iterator<Node>   const_iterator;
+		typedef ft::set_it<Node>                         iterator;
+//		typedef ft::Const_Bidirectional_iterator<Node>   const_iterator;
+		typedef iterator const_iterator ;
 		typedef ft::reverse_iterator<iterator>           reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>     const_reverse_iterator;
 		typedef std::ptrdiff_t                           difference_type;

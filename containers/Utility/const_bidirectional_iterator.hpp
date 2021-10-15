@@ -26,8 +26,6 @@ namespace ft
 		const _node*       _root;
 	private:
 		typedef Const_Bidirectional_iterator<Node> _Self;
-
-
 	public:
 		Const_Bidirectional_iterator():_n(NULL), _nil(NULL){}
 		Const_Bidirectional_iterator(const _node* ptr, const _node* root, const _node* sentinel):_n(ptr),_nil(sentinel), _root(root){
@@ -39,9 +37,8 @@ namespace ft
 			_nil = obj._nil;
 			_root = obj._root;
 		}
-
 		// here is for set because The value of the elements in a set cannot be modified once in the container
-		Const_Bidirectional_iterator(set_it<Node> obj)
+	Const_Bidirectional_iterator(set_it<Node> obj)
 		{
 			_n = obj._n;
 			_nil = obj._nil;

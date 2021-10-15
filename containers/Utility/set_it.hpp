@@ -33,6 +33,8 @@ namespace ft
 		set_it():_n(NULL), _nil(NULL), _root(NULL){}
 		set_it(_node *n, _node *root, _node* nil):_n(n), _nil(nil), _root(root){}
 		set_it(const _Self &obj):_n(obj._n), _nil(obj._nil), _root(obj._root){}
+		/*ici* I add */
+		set_it(Const_Bidirectional_iterator<const Node_type> &obj):_n(obj._n), _nil(obj._nil), _root(obj._root){}
 		~set_it(){}
 		_Self &operator=(const _Self &src)
 		{
@@ -41,11 +43,14 @@ namespace ft
 			_root = src._root;
 			return *this;
 		}
-		// set_it (Const_Bidirectional_iterator<Node_type> src)
-		// {
-		// 	_n = src._n;
-		// 	_nil = src._nil;
-		// 	_root = src._root;
+		// set_it(Const_Bidirectional_iterator<Node_type> &src)
+		// 	{
+		// 		_Self a;
+		// 		a._n = src._n;
+		// 		a._nil = src._nil;
+		// 		a._root = src._root;
+		// 		*this = a;
+		// 	//	return *this;
 		// }
 		/*******************************************
 		 *****          dereferenced           *****
@@ -117,9 +122,6 @@ namespace ft
 		 *****         Operator Boolean         *****
 		 *****            == | !=               *****
 		 *******************************************/
-//		friend bool operator==(const _Self& a, const _Self& b){return (a._n == b._n);}
-//		friend bool operator!=(const _Self& a, const _Self& b){return !(a._n == b._n);}
-
 		bool
         operator==(_Self const& rhs) const
         {
@@ -131,9 +133,9 @@ namespace ft
 			{
             return _n != rhs._n;
 			}
-
-
 	};
+
+
 }
 
 

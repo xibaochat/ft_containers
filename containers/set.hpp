@@ -8,7 +8,7 @@ namespace ft
 
 	template < class T,  class Compare = ft::less<T>,
 			   class Alloc = std::allocator<T> >
-	class set //: public set_red_black_tree<T, ft::Node<T>, Compare >
+	class set
 	{
 	public:
 		typedef T               key_type;
@@ -23,7 +23,6 @@ namespace ft
 		typedef std::size_t                               size_type;
         typedef std::ptrdiff_t                            difference_type;
 	private:
-//		typedef ft::pair<T, T> E;
 		typedef set_red_black_tree<T, ft::Node<T>, Compare> _tree_type;
 		typedef set<T, Compare, allocator_type> _Self;
 		_tree_type _tree;
@@ -34,6 +33,7 @@ namespace ft
 		typedef typename _tree_type::reverse_iterator reverse_iterator;
 		typedef typename _tree_type::const_reverse_iterator const_reverse_iterator;
 
+	public:
 		explicit set (const key_compare& comp = key_compare(),
 					  const allocator_type& alloc = allocator_type()):_tree(comp, alloc){}
 		template <class InputIterator>
