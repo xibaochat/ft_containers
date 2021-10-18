@@ -23,6 +23,8 @@ namespace ft
 		~VectorIterator(){}//destructor
 		_Self &operator=(const _Self &src)//b = a;
 		{
+			if (this == &src)
+				return (*this);
 			this->m_ptr = src.m_ptr;
 			return *this;
 		}
@@ -77,7 +79,7 @@ namespace ft
 
 
 		//prefix-decrease :--a
-		_Self operator--()
+		_Self &operator--()
 			{
 				m_ptr--;
 				return *this;

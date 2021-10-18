@@ -220,12 +220,31 @@ namespace ft
 						  , typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL)//it.begin() or array
 		{
 			difference_type n;
-			n = last - first;//nb to insert
+//			n = last - first;//nb to insert
+
+			/*here is I add after*/
+			n = 0;
+			InputIterator tmp = first;
+			while (tmp != last)
+			{
+				n++;
+				tmp++;
+			}
+			/*till here*/
 			if (!n)
 				 return ;
 			pointer new_arr = _alloc.allocate(n);
-			for(size_type i=0; first + i < last; i++)
-				_alloc.construct(new_arr + i, *(first + i));
+//			for(size_type i=0; first + i < last; i++)
+//				_alloc.construct(new_arr + i, *(first + i));
+			/*here is new*/
+			int i = 0;
+			while (first != last)
+			{
+				_alloc.construct(new_arr + i, *first);
+				i++;
+				first++;
+			}
+			/*till here*/
 			difference_type index = position - this->begin();
 			if (_len + n > _cap)
 			{
@@ -311,12 +330,23 @@ namespace ft
 		void assign (InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL)
 		{
 			this->clear();
-			size_t n = last - first;
+//			size_t n = last - first;
+			/*new add*/
+			size_t n = 0;
+			InputIterator tmp = first;
+			while (tmp != last)
+			{
+				tmp++;
+				n++;
+			}
+			/*till here*/
 			if (n > _cap)
                 reserve(n);
 			for(size_t i = 0; i < n; i++)
             {
-                _alloc.construct(_arr + i, *(first + i));
+				// _alloc.construct(_arr + i, *(first + i));
+				_alloc.construct(_arr + i, *first);
+				first++;
             }
 			_len += n;
 		}
