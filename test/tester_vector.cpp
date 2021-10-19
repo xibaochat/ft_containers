@@ -22,9 +22,9 @@ void printSingleValue(std::fstream& fs, const T& t1, const T& t2)
     fs << "FT  [" << equal(t1, t2) << "]: " << t2 << "\n";
     fs << "══════════════════════════════════════════════════════════════\n";
 	if (t1 == t2)
-		std::cout << GREEN << "[OK]" << NC;
+		std::cout << GREEN << "[OK]" << NC << std::endl;
 	else
-		std::cout << RED << "[NOP]" << NC;
+		std::cout << RED << "[NOP]" << NC << std::endl;
 	fs.close();
 }
 
@@ -133,16 +133,16 @@ void show_res(const char * str, const char *message, std::fstream &fs, std::vect
 	fs.open(str, std::fstream::in | std::fstream::out | std::fstream::trunc);
 	std::cout << message;
 	if (printVectorAttributes(fs, s_v, my_v) == true)
-		std::cout << GREEN << "[OK]";
+		std::cout << GREEN << "[OK]" << NC;
 	else
-		std::cout << RED << "[NOP]";
-	std::cout << NC << std::endl;
+		std::cout << RED << "[NOP]" << NC;
+	std::cout << std::endl;
 	fs.close();
 }
 
 void test_vector()
 {
-	std::cout << UNDERLINE << "SET :\n" << NC ;
+	std::cout << UNDERLINE << "VECTOR :\n" << NC ;
 	/*default construtor*/
 	mkdir("./vectors_output", 0777);
 	std::vector<int> stl_v;
@@ -334,16 +334,16 @@ void test_vector()
 		int v_rbegin = *ft_range_vector.rbegin();
 		int stl_rend = *(stl_range_vector.rend() -1);
 		int v_rend = *(ft_range_vector.rend() - 1);
-		fs.open("./vectors_output/test_const_begin_end_rbegin_rend", std::fstream::in | std::fstream::out | std::fstream::app);
-		std::cout << "test_const_begin_end_rbegin_rend const_iterator begin";
+		fs.open("./vectors_output/test_const_begin", std::fstream::in | std::fstream::out | std::fstream::app);
+		std::cout << "test_const_begin ";
 		printSingleValue(fs, stl_begin, v_begin);
-		fs.open("./vectors_output/test_const_begin_end_rbegin_rend", std::fstream::in | std::fstream::out | std::fstream::app);
+		fs.open("./vectors_output/test_const_end", std::fstream::in | std::fstream::out | std::fstream::app);
 		std::cout << "last value";
 		printSingleValue(fs, stl_end, v_end);
-		fs.open("./vectors_output/test_const_begin_end_rbegin_rend", std::fstream::in | std::fstream::out | std::fstream::app);
+		fs.open("./vectors_output/test_const_rbegin", std::fstream::in | std::fstream::out | std::fstream::app);
 		std::cout << "rbegin value";
 		printSingleValue(fs, stl_rbegin, v_rbegin);
-		fs.open("./vectors_output/test_const_begin_end_rbegin_rend", std::fstream::in | std::fstream::out | std::fstream::app);
+		fs.open("./vectors_output/test_const_rbegin_rend", std::fstream::in | std::fstream::out | std::fstream::app);
 		std::cout << "rend value";
 		printSingleValue(fs, stl_rend, v_rend);
 		std::vector<int>::reverse_iterator stl_it = stl_range_vector.rbegin();
@@ -621,35 +621,5 @@ void test_vector()
 		else
 			std::cout << "non empty vector_2" << RED << "[NOP]" << NC << std::endl;
 	}
-}
-
-template <typename T>
-std::string printPair(const T &iterator, bool nl = true, std::ostream &o = std::cout)
-{
-    o << "value: " << *iterator;
-    if (nl)
-        o << std::endl;
-    return ("");
-}
-
-void	is_empty(ft::vector<int> const &vct)
-{
-	std::cout << "is_empty: " << vct.empty() << std::endl;
-}
-
-template <typename T>
-void	printSize(ft::vector<T> const &vct, bool print_content = 1)
-{
-	std::cout << "size: " << vct.size() << std::endl;
-	std::cout << "capacity: " << vct.capacity() << std::endl;
-	std::cout << "max_size: " << vct.max_size() << std::endl;
-	if (print_content)
-	{
-		typename ft::vector<T>::const_iterator it = vct.begin();
-		typename ft::vector<T>::const_iterator ite = vct.end();
-		std::cout << std::endl << "Content is:" << std::endl;
-		for (; it != ite; ++it)
-			std::cout << "- " << *it << std::endl;
-	}
-	std::cout << "###############################################" << std::endl;
+	std::cout << std::endl;
 }

@@ -44,5 +44,5 @@ clean:
 fclean: clean
 	@/bin/rm -f *~ ${NAME}
 	@/bin/rm -f *#
-
+	@/bin/rm -rf maps_output set_output vectors_output
 re: fclean all
