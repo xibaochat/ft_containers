@@ -2,7 +2,10 @@
 
 int main()
 {
-//	test_vector();
+	test_vector();
 	test_map();
+	test_stack();
+	test_set();
+
 	return (0);
 }

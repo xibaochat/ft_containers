@@ -12,6 +12,7 @@ bool equalbool(const T& t1, const T& t2)
     return (t1 == t2 ? true : false);
 }
 
+
 template<class T>
 void printSingleValue(std::fstream& fs, const T& t1, const T& t2)
 {
@@ -141,6 +142,8 @@ void show_res(const char * str, const char *message, std::fstream &fs, std::vect
 
 void test_vector()
 {
+	std::cout << UNDERLINE << "SET :\n" << NC ;
+	/*default construtor*/
 	mkdir("./vectors_output", 0777);
 	std::vector<int> stl_v;
 	ft::vector<int>  my_v;
@@ -196,13 +199,6 @@ void test_vector()
 		ft::vector<int>my_v = my_vector;
 		show_res("./vectors_output/constructor_assign", "test_vector_constructor_assign(): ", fs, stl_vector, my_v);
 	}
-	// {
-    //      std::vector<int> stl_filled(100000);
-    //      ft::vector<int> ft_filled(100000);
-
-	// 	 show_res("./vectors_output/size_big", "test_vector_fill_big_nb", fs, stl_filled, ft_filled);
-	// 	 fs.close();
-	// }
 	/*resize*/
 	{
 		std::vector<int> stl_v(12);
@@ -465,7 +461,7 @@ void test_vector()
 		show_res("./vectors_output/assign_test_2", "test_assign_2", fs, third, my_thd);
 		show_res("./vectors_output/assign_test_3", "test_assign_3", fs, forth, my_forth);
 	}
-	/*pop test*/
+	/*pop back test*/
 	{
 		std::vector<int> stl_v;
 		ft::vector<int>  my_v;
@@ -657,20 +653,3 @@ void	printSize(ft::vector<T> const &vct, bool print_content = 1)
 	}
 	std::cout << "###############################################" << std::endl;
 }
-
-// void vector_iterator_test()
-// {
-// 	iterator_test();
-// 	std::cout << RED << "------------SPLIT LINE-------------" << NC << std::endl;
-// 	real_iterator();
-// }
-
-// void vector_reverse_iterator_test()
-// {
-// 	// reverse_iterator_incrementers();
-// 	// stl_reverse_iterator_incrementers();
-// 	//reverse_iterator_arithmetics();
-// 	//stl_reverse_iterator_arithmetics();
-//	reverse_iterator_bool_test();
-//	stl_reverse_iterator_bool_test();
-//}

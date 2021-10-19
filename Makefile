@@ -2,7 +2,7 @@ NAME = ft_containers
 
 TEST_PATH = ./test
 
-SRC = main.cpp tester_vector.cpp  tester_map.cpp
+SRC = main.cpp tester_vector.cpp  tester_map.cpp tester_stack.cpp tester_set.cpp
 
 SRC_PATH = $(addprefix $(TEST_PATH)/,$(SRC))
 
@@ -37,8 +37,6 @@ all: ${NAME}
 	@printf "\n${NC}⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤\n"
 	@printf "${BLUE}FT_CONTAINERS${NC}:    ${GREEN}Ready             ${YELLOW}----          ${NC}\n"
 	@printf "⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤⏤\n"
-
-
 
 clean:
 	@/bin/rm -f ${OBJ}
