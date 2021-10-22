@@ -15,7 +15,6 @@ namespace ft
 		typedef key_type  value_type;
 		typedef Compare                                  key_compare;
 		typedef ft::set_it<Node>                         iterator;
-//		typedef ft::Const_Bidirectional_iterator<Node>   const_iterator;
 		typedef iterator const_iterator ;
 		typedef ft::reverse_iterator<iterator>           reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>     const_reverse_iterator;
@@ -23,7 +22,6 @@ namespace ft
 		typedef std::size_t                              size_type;
 		typedef std::allocator<Node>      allocator_type;
 	private:
-		/*-----------------mark?*/
 		typedef Node*                     node_pointer;
 		node_pointer                      _root;
 		node_pointer                      _nil;
@@ -253,15 +251,14 @@ namespace ft
 					tmp->color = black;
 				else if (n->right == _nil)
 					delete_case(n);
-				else
-				{
+			 	else
 					delete_case(tmp);
-				}
 			}
 			//till ici
 			_alloc.destroy(n);
 			_alloc.deallocate(n, 1);
 			_size--;
+
 		}
 		size_type erase (const value_type& k)
 		{

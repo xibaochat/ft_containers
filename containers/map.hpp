@@ -4,7 +4,6 @@
 #include "Utility/main.hpp"
 namespace ft
 {
-	//           key_type	, mapped_type,  key_compare
  	template<class Key, class T, class Compare = ft::less<Key>,
 			 class Allocator = std::allocator<ft ::pair<const Key,T > > >
 	class map
@@ -36,7 +35,6 @@ namespace ft
 		{
 			return Compare();
 		}
-//		template <class Key, class T, class Compare, class Alloc>
 		class value_compare: std::binary_function<value_type,value_type,bool>
 		{
 			friend class map;
@@ -205,7 +203,7 @@ namespace ft
 	{
 		if (lhs.size() != rhs.size())
 			return (false);
-		return equal(lhs.begin(), lhs.end(), rhs.begin());
+		return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
 	}
 	template <class Key, class T, class Compare, class Alloc>
 	bool operator!= ( const map<Key,T,Compare,Alloc>& lhs,
@@ -217,7 +215,7 @@ namespace ft
 	bool operator<  ( const map<Key,T,Compare,Alloc>& lhs,
 					  const map<Key,T,Compare,Alloc>& rhs )
 	{
-		return lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+		return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 	}
 	template <class Key, class T, class Compare, class Alloc>
 	bool operator<= ( const map<Key,T,Compare,Alloc>& lhs,
