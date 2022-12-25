@@ -12,17 +12,17 @@
 
 - [x] Map ([std::map]) 
 <br>
-STL is not allowed. That means you cannot you cannot use <iterator> or even <utility>.
+STL is not allowed. That means you cannot you cannot use <iterator> or even <utility>.</br>
 
-bonus:<br>
+bonus:<br></br>
 - [x] Set ([std::set])
-<br>This implementation requires utilisation of Red-Black tree.
+<br>This implementation requires utilisation of Red-Black tree.</br>
 <br>
-<table  align="center">
+<table  align="center"></br>
 <td>
- <b face="arial" >final mark<br><br></font></b></p>
+ <b face="arial" >final mark<br><br>
  <img src="https://github.com/xibaochat/ft_containers/blob/master/final_mark.png">
-
+</br></br>
 </td>
 <td>
 
@@ -33,6 +33,9 @@ bonus:<br>
 </td>
 </table>
 <br>
+
+### Subject:
+#### EN [en_ft_container.pdf](https://github.com/xibaochat/ft_containers/edit/main/README.md)
 
 This project passed the tough test from [mli42_ontainers_test](https://github.com/mli42/containers_test.git)
 
@@ -45,8 +48,7 @@ make
 ```
 compare reimplemented containers wiith STL containers: ./my_containers 
 
-more performance test with timing: ./ft_containers , 
-to see STL containers performance : ./stl_containers
+more performance test with timing: ./ft_containers, 
 
----
+to see STL containers performance : ./stl_containers
  
