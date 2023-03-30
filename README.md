@@ -33,7 +33,6 @@ bonus:<br></br>
 </td>
 </table>
 <br>
-
 ### Subject:
 #### EN [en_ft_container.pdf](https://github.com/xibaochat/ft_containers/blob/master/ft_container_en.subject.pdf)
 
