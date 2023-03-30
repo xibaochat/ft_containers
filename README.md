@@ -12,11 +12,11 @@
 
 - [x] Map ([std::map]) 
 <br>
-STL is not allowed. That means you cannot you cannot use <iterator> or even <utility>.
+STL is not allowed. That means you cannot you cannot use  &lt;iterator&gt; or even &lt;utility&gt.
 </br>
 
 bonus:<br></br>
-- [x] Set ([std::set])
+- [x] Set ([std::set]) 
 <br>This implementation requires utilisation of Red-Black tree.</br>
 <br>
 <table  align="center"></br>
